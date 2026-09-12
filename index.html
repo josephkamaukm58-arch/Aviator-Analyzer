@@ -36,9 +36,42 @@ font-weight:bold;
 box-shadow:0 5px 20px #0008;
 }
 </style>
+
+<style>
+.top-nav{
+position:sticky;
+top:0;
+z-index:1000;
+display:flex;
+gap:6px;
+justify-content:center;
+flex-wrap:wrap;
+padding:10px;
+background:#0b1020;
+border-bottom:1px solid #26324a;
+}
+.top-nav a{
+color:white;
+text-decoration:none;
+padding:10px 12px;
+border-radius:8px;
+background:#172238;
+font-size:14px;
+}
+.top-nav a:hover{
+background:#ff3b30;
+}
+</style>
 </head>
 <body>
 
+
+<nav class="top-nav">
+<a href="#">🏠 Home</a>
+<a href="#predictionCard">📊 Analyzer</a>
+<a href="#userDashboard">👤 Account</a>
+<a href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer" target="_blank">💬 WhatsApp</a>
+</nav>
 <div class="container">
 <h1>✈️ AVIATOR ANALYZER</h1>
 
