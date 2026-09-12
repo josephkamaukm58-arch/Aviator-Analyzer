@@ -793,8 +793,42 @@ body.light-mode input{
   }
 }
 </style>
+
+<style>
+.session-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:10px 0 18px;
+  padding:10px 13px;
+  background:#111a2b;
+  border:1px solid #2b3955;
+  border-radius:12px;
+  color:#aeb8c9;
+  font-size:12px;
+}
+.session-live{
+  color:#20c968;
+  font-weight:bold;
+}
+#currentTime{
+  font-weight:bold;
+  color:white;
+}
+@media(max-width:500px){
+  .session-bar{
+    flex-direction:column;
+  }
+}
+</style>
 </head>
 
+
+<div class="session-bar">
+  <span class="session-live">● SYSTEM ONLINE</span>
+  <span>🕒 <span id="currentTime">Loading...</span></span>
+</div>
 <div id="appLoader">
   <div class="loader-box">
     <div class="loader-plane">✈️</div>
@@ -2321,6 +2355,23 @@ async function updateMainLiveStatus(){
 
 window.addEventListener("load",updateMainLiveStatus);
 setInterval(updateMainLiveStatus,15000);
+</script>
+
+<script>
+function updateCurrentTime(){
+  const el=document.getElementById("currentTime");
+  if(!el) return;
+
+  const now=new Date();
+
+  el.textContent=now.toLocaleString("en-KE",{
+    dateStyle:"medium",
+    timeStyle:"medium"
+  });
+}
+
+updateCurrentTime();
+setInterval(updateCurrentTime,1000);
 </script>
 </body>
 </html>
