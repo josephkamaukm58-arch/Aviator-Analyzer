@@ -84,11 +84,27 @@ Analysis is based only on recorded history. It cannot predict or guarantee the n
 </div>
 <div class="card" id="liveTracker">
 <h2>🔴 Live Round Tracker</h2>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+<button id="liveModeBtn" type="button">▶ START LIVE MODE</button>
+<button id="clearLiveBtn" type="button">↻ RESET</button>
+</div>
+
 <form id="liveRoundForm" style="display:flex;gap:8px;align-items:center">
-<input id="liveMultiplier" type="number" step="0.01" min="1.01" inputmode="decimal" placeholder="e.g. 1.75" required
-<button type="submit">ADD ROUND</button>
+<input id="liveMultiplier" type="number" step="0.01" min="1.01"
+inputmode="decimal" placeholder="Enter multiplier e.g. 1.75" required
+style="flex:1">
+<button type="submit">ADD</button>
 </form>
-<div id="liveMessage" style="margin-top:10px;color:#aeb8c9">Enter each multiplier as the round ends.</div>
+
+<div id="liveStatus"
+style="margin-top:12px;padding:10px;border-radius:10px;background:#1b263b;text-align:center">
+⚪ LIVE MODE OFF
+</div>
+
+<div id="liveMessage" style="margin-top:10px;color:#aeb8c9">
+Enter each multiplier when the round ends.
+</div>
 </div>
 <div class="card" id="predictionCard">
 <h2>🎯 Prediction Display</h2>
@@ -359,6 +375,82 @@ update=function(){
  updateAdvancedStats();
 };
 updateAdvancedStats();
+</script>
+<script>
+(function(){
+ const form=document.getElementById("liveRoundForm");
+ const input=document.getElementById("liveMultiplier");
+ const modeBtn=document.getElementById("liveModeBtn");
+ const resetBtn=document.getElementById("clearLiveBtn");
+ const status=document.getElementById("liveStatus");
+ const message=document.getElementById("liveMessage");
+
+ if(!form || !input || !modeBtn) return;
+
+ let liveMode=false;
+ let roundsAdded=0;
+
+ function refreshAnalysis(){
+   if(typeof update==="function") update();
+   if(typeof updatePrediction==="function") updatePrediction();
+   if(typeof updateAdvancedStats==="function") updateAdvancedStats();
+ }
+
+ modeBtn.addEventListener("click",function(){
+   liveMode=!liveMode;
+
+   if(liveMode){
+     modeBtn.textContent="⏹ STOP LIVE MODE";
+     status.textContent="🟢 LIVE MODE ON — READY";
+     message.textContent="Enter each multiplier as soon as the round ends.";
+     input.focus();
+   }else{
+     modeBtn.textContent="▶ START LIVE MODE";
+     status.textContent="⚪ LIVE MODE OFF";
+     message.textContent="Live mode stopped. Your saved rounds remain.";
+   }
+ });
+
+ form.addEventListener("submit",function(e){
+   e.preventDefault();
+
+   const value=parseFloat(input.value);
+
+   if(!Number.isFinite(value) || value<1.01){
+     message.textContent="⚠️ Enter a valid multiplier of 1.01× or higher.";
+     input.focus();
+     return;
+   }
+
+   if(typeof data==="undefined"){
+     message.textContent="⚠️ Round data is unavailable.";
+     return;
+   }
+
+   data.unshift(value);
+   localStorage.setItem("aviatorData",JSON.stringify(data));
+
+   roundsAdded++;
+   refreshAnalysis();
+
+   status.textContent=liveMode
+     ? "🟢 LIVE MODE ON — "+value.toFixed(2)+"× ADDED"
+     : "🟡 ROUND ADDED — LIVE MODE OFF";
+
+   message.textContent="Round "+value.toFixed(2)+"× saved. Dashboard updated.";
+   input.value="";
+   input.focus();
+ });
+
+ resetBtn.addEventListener("click",function(){
+   liveMode=false;
+   modeBtn.textContent="▶ START LIVE MODE";
+   status.textContent="⚪ LIVE MODE OFF";
+   message.textContent="Tracker ready. Your existing round history was not deleted.";
+   input.value="";
+   input.focus();
+ });
+})();
 </script>
 </body>
 </html>
