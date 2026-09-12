@@ -1084,6 +1084,71 @@ function restoreAnalysis(event){
  reader.readAsText(file);
 }
 
+
+function showAdminDashboard(){
+ const existing=document.getElementById("adminDashboard");
+ if(existing) existing.remove();
+
+ const admin=document.createElement("div");
+ admin.id="adminDashboard";
+ admin.className="card";
+ admin.innerHTML=`
+   <h2>🛠️ Admin Dashboard</h2>
+
+   <div class="dashboard-stats">
+     <div class="dashboard-stat">
+       <small>REGISTERED USERS</small>
+       <strong id="adminUsers">0</strong>
+     </div>
+
+     <div class="dashboard-stat">
+       <small>ROUNDS ANALYZED</small>
+       <strong id="adminRounds">0</strong>
+     </div>
+
+     <div class="dashboard-stat">
+       <small>SYSTEM</small>
+       <strong>🟢 ONLINE</strong>
+     </div>
+
+     <div class="dashboard-stat">
+       <small>LIVE API</small>
+       <strong id="adminApi">CHECKING</strong>
+     </div>
+   </div>
+
+   <div id="adminMessage"
+        style="margin-top:12px;color:#aeb8c9">
+        Admin statistics loaded.
+   </div>
+ `;
+
+ document.querySelector(".container").appendChild(admin);
+
+ fetch("/api/status")
+   .then(r=>r.json())
+   .then(result=>{
+     document.getElementById("adminApi").textContent=
+       result.connected ? "🟢 CONNECTED" : "🟡 WAITING";
+   })
+   .catch(()=>{
+     document.getElementById("adminApi").textContent="🔴 OFFLINE";
+   });
+
+ fetch("/api/admin-stats")
+   .then(r=>r.json())
+   .then(result=>{
+     document.getElementById("adminUsers").textContent=result.users;
+     document.getElementById("adminRounds").textContent=data.length;
+   })
+   .catch(()=>{
+     document.getElementById("adminMessage").textContent=
+       "Admin statistics server endpoint is not available yet.";
+     document.getElementById("adminUsers").textContent="—";
+     document.getElementById("adminRounds").textContent=data.length;
+   });
+}
+
 function logoutUser(){
  localStorage.removeItem("aviatorLoggedIn");
  document.getElementById("userDashboard").style.display="none";
