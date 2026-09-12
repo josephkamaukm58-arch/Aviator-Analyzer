@@ -1479,6 +1479,14 @@ LOG OUT
 <button type="submit">LOGIN</button>
 </form>
 <div id="loginMessage" style="margin-top:12px;text-align:center"></div>
+<div style="text-align:center;margin-top:12px;">
+  <button type="button"
+    onclick="forgotPassword()"
+    style="background:none;border:0;color:#ff6b61;cursor:pointer;font-weight:bold;">
+    Forgot your password?
+  </button>
+</div>
+
 </div>
 
 
@@ -2832,6 +2840,22 @@ document.addEventListener("submit",function(event){
     }
   }
 });
+</script>
+
+<script>
+function forgotPassword(){
+  showToast(
+    "🔐 Password recovery is not configured yet. Please contact support on WhatsApp.",
+    "warning"
+  );
+
+  setTimeout(function(){
+    window.open(
+      "https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer%20Support%2C%20I%20need%20help%20recovering%20my%20account.",
+      "_blank"
+    );
+  },800);
+}
 </script>
 </body>
 </html>
