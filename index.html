@@ -643,6 +643,37 @@ body.light-mode input{
   border-color:#ff3b30;
 }
 </style>
+
+<style>
+.live-status-bar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin:12px 0 18px;
+  padding:10px 14px;
+  border-radius:12px;
+  background:#111a2b;
+  border:1px solid #2b3955;
+  font-size:13px;
+  font-weight:bold;
+}
+.live-status-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#ffd166;
+  box-shadow:0 0 10px #ffd166;
+}
+.live-status-bar.connected .live-status-dot{
+  background:#20c968;
+  box-shadow:0 0 10px #20c968;
+}
+.live-status-bar.offline .live-status-dot{
+  background:#ff3b30;
+  box-shadow:0 0 10px #ff3b30;
+}
+</style>
 </head>
 
 <div id="appLoader">
@@ -2071,6 +2102,38 @@ function showToast(message,type="success"){
     toast.classList.remove("show");
   },3000);
 }
+</script>
+
+<script>
+async function updateMainLiveStatus(){
+  const bar=document.getElementById("mainLiveStatus");
+  const text=document.getElementById("mainLiveStatusText");
+
+  if(!bar || !text) return;
+
+  try{
+    const response=await fetch("/api/status",{cache:"no-store"});
+    if(!response.ok) throw new Error("Backend unavailable");
+
+    const result=await response.json();
+
+    bar.classList.remove("offline","connected");
+
+    if(result.connected){
+      bar.classList.add("connected");
+      text.textContent="🟢 LIVE DATA: CONNECTED";
+    }else{
+      text.textContent="🟡 LIVE DATA: WAITING FOR AUTHORIZED SOURCE";
+    }
+  }catch(error){
+    bar.classList.remove("connected");
+    bar.classList.add("offline");
+    text.textContent="🔴 LIVE DATA: BACKEND OFFLINE";
+  }
+}
+
+window.addEventListener("load",updateMainLiveStatus);
+setInterval(updateMainLiveStatus,15000);
 </script>
 </body>
 </html>
