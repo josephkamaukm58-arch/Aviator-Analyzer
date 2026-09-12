@@ -819,6 +819,30 @@ function showUserDashboard(){
  }
 
  avgBox.querySelector("div").textContent=userAverage;
+
+ const userHighest=data.length
+   ? Math.max(...data).toFixed(2)+"×"
+   : "0.00×";
+
+ const userLowest=data.length
+   ? Math.min(...data).toFixed(2)+"×"
+   : "0.00×";
+
+ function addStat(id,label,value){
+   let el=document.getElementById(id);
+   if(!el){
+     el=document.createElement("div");
+     el.id=id;
+     el.style.cssText="background:#1b263b;padding:14px;border-radius:10px;text-align:center;margin-top:10px";
+     el.innerHTML='<small></small><div style="font-size:24px;font-weight:bold"></div>';
+     document.getElementById("userDashboard").appendChild(el);
+   }
+   el.querySelector("small").textContent=label;
+   el.querySelector("div").textContent=value;
+ }
+
+ addStat("userHighest","HIGHEST MULTIPLIER",userHighest);
+ addStat("userLowest","LOWEST MULTIPLIER",userLowest);
 }
 
 function logoutUser(){
