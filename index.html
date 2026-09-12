@@ -521,5 +521,40 @@ updateAdvancedStats();
  },10000);
 })();
 </script>
+<script>
+(function(){
+ async function checkBackend(){
+   const status=document.getElementById("apiStatus");
+   const detail=document.getElementById("apiDetail");
+   const dot=document.getElementById("apiDot");
+
+   if(!status || !detail || !dot) return;
+
+   try{
+     const response=await fetch("/api/status",{cache:"no-store"});
+     if(!response.ok) throw new Error("Backend unavailable");
+
+     const result=await response.json();
+
+     if(result.connected){
+       dot.textContent="🟢";
+       status.textContent="LIVE FEED CONNECTED";
+       detail.textContent="Authorized API configured";
+     }else{
+       dot.textContent="🟡";
+       status.textContent="BACKEND READY";
+       detail.textContent="Waiting for an authorized live data source";
+     }
+   }catch(error){
+     dot.textContent="🔴";
+     status.textContent="NOT CONNECTED";
+     detail.textContent="Backend is not reachable from this page";
+   }
+ }
+
+ checkBackend();
+ setInterval(checkBackend,15000);
+})();
+</script>
 </body>
 </html>
