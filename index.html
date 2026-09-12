@@ -325,6 +325,14 @@ Enter each multiplier when the round ends.
 
 <div class="card">
 <h2>📜 Round History</h2>
+
+<div style="margin:10px 0">
+<input id="historySearch"
+type="search"
+placeholder="🔎 Search multiplier..."
+oninput="filterHistory()"
+style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px">
+</div>
 <div id="history">No rounds recorded.</div>
 <button onclick="clearRounds()">CLEAR HISTORY</button>
 </div>
@@ -984,6 +992,33 @@ function exportAnalysis(){
  a.remove();
 
  URL.revokeObjectURL(url);
+}
+
+function filterHistory(){
+ const input=document.getElementById("historySearch");
+ const list=document.getElementById("history");
+
+ if(!input || !list) return;
+
+ const query=input.value.trim().toLowerCase();
+
+ list.innerHTML="";
+
+ const filtered=data.filter(value=>{
+   return String(Number(value).toFixed(2)).includes(query);
+ });
+
+ if(!filtered.length){
+   list.innerHTML="<div style='padding:10px;color:#aeb8c9'>No matching rounds found.</div>";
+   return;
+ }
+
+ filtered.slice(0,50).forEach((value,index)=>{
+   const row=document.createElement("div");
+   row.style.cssText="padding:8px 0;border-bottom:1px solid #26324a;display:flex;justify-content:space-between";
+   row.innerHTML="<span>Round "+(index+1)+"</span><strong>"+Number(value).toFixed(2)+"×</strong>";
+   list.appendChild(row);
+ });
 }
 
 function logoutUser(){
