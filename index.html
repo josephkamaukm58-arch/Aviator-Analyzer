@@ -1021,6 +1021,69 @@ function filterHistory(){
  });
 }
 
+function backupAnalysis(){
+ if(!data.length){
+   alert("No analysis history to back up.");
+   return;
+ }
+
+ const backup={
+   app:"Aviator Analyzer",
+   created:new Date().toISOString(),
+   rounds:data
+ };
+
+ const blob=new Blob(
+   [JSON.stringify(backup,null,2)],
+   {type:"application/json"}
+ );
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download="aviator-analysis-backup.json";
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ URL.revokeObjectURL(url);
+}
+
+function restoreAnalysis(event){
+ const file=event.target.files[0];
+ if(!file) return;
+
+ const reader=new FileReader();
+
+ reader.onload=function(){
+   try{
+     const backup=JSON.parse(reader.result);
+
+     if(!Array.isArray(backup.rounds)){
+       throw new Error("Invalid backup");
+     }
+
+     data=backup.rounds
+       .map(Number)
+       .filter(value=>Number.isFinite(value) && value>0);
+
+     localStorage.setItem("aviatorRounds",JSON.stringify(data));
+
+     update();
+     updatePrediction();
+     updateAdvancedStats();
+     showUserDashboard();
+
+     alert("✅ Analysis history restored successfully.");
+   }catch(error){
+     alert("❌ Invalid Aviator Analyzer backup file.");
+   }
+ };
+
+ reader.readAsText(file);
+}
+
 function logoutUser(){
  localStorage.removeItem("aviatorLoggedIn");
  document.getElementById("userDashboard").style.display="none";
