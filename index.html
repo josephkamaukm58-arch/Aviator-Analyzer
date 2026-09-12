@@ -66,6 +66,11 @@ small{color:#aeb8c9}
 </div>
 
 <div class="card">
+<h2>📈 Multiplier Chart</h2>
+<canvas id="chart" height="220"></canvas>
+</div>
+
+<div class="card">
 <h2>📊 Analysis Signal</h2>
 <div class="signal" id="signal">Add rounds to begin analysis.</div>
 </div>
@@ -217,6 +222,44 @@ update=function(){
  updatePrediction();
 };
 updatePrediction();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let chart;
+
+function drawChart(){
+ const values=[...data].reverse().slice(-30);
+ const ctx=document.getElementById("chart");
+ if(!ctx)return;
+ if(chart)chart.destroy();
+ chart=new Chart(ctx,{
+   type:"line",
+   data:{
+     labels:values.map((_,i)=>i+1),
+     datasets:[{
+       label:"Multiplier",
+       data:values,
+       tension:.25,
+       fill:false
+     }]
+   },
+   options:{
+     responsive:true,
+     plugins:{legend:{display:true}},
+     scales:{
+       y:{beginAtZero:true}
+     }
+   }
+ });
+}
+
+const oldUpdate=update;
+update=function(){
+ oldUpdate();
+ drawChart();
+};
+update();
 </script>
 </body>
 </html>
