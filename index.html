@@ -859,7 +859,7 @@ function showUserDashboard(){
    avgBox=box;
  }
 
- avgBox.querySelector("div").textContent=userAverage;
+ avgBox.querySelector("div").textContent=userAverage;\n updateRecentActivity();
 
  const userHighest=data.length
    ? Math.max(...data).toFixed(2)+"×"
@@ -884,6 +884,36 @@ function showUserDashboard(){
 
  addStat("userHighest","HIGHEST MULTIPLIER",userHighest);
  addStat("userLowest","LOWEST MULTIPLIER",userLowest);
+}
+
+function updateRecentActivity(){
+ const dashboard=document.getElementById("userDashboard");
+ if(!dashboard) return;
+
+ let box=document.getElementById("recentActivity");
+
+ if(!box){
+   box=document.createElement("div");
+   box.id="recentActivity";
+   box.style.cssText="background:#111a2b;padding:15px;border-radius:12px;margin-top:12px;border:1px solid #2b3955";
+   dashboard.appendChild(box);
+ }
+
+ const recent=data.slice(0,10);
+
+ box.innerHTML="<h3 style='margin-top:0'>📋 Recent Activity</h3>";
+
+ if(!recent.length){
+   box.innerHTML+="<div style='color:#aeb8c9'>No rounds analyzed yet.</div>";
+   return;
+ }
+
+ recent.forEach((value,index)=>{
+   const row=document.createElement("div");
+   row.style.cssText="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #26324a";
+   row.innerHTML="<span>Round "+(index+1)+"</span><strong>"+Number(value).toFixed(2)+"×</strong>";
+   box.appendChild(row);
+ });
 }
 
 function logoutUser(){
