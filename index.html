@@ -377,6 +377,50 @@ body.light-mode input{
   margin-bottom:0;
 }
 </style>
+
+<style>
+.site-footer{
+  margin-top:35px;
+  padding:30px 15px;
+  text-align:center;
+  background:#070b14;
+  border-top:1px solid #26324a;
+}
+.footer-brand{
+  font-size:22px;
+  font-weight:bold;
+  color:#ff3b30;
+}
+.site-footer p{
+  color:#8f9bb0;
+  max-width:600px;
+  margin:10px auto 18px;
+}
+.footer-links{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.footer-links a{
+  color:#dce3ef;
+  text-decoration:none;
+  padding:8px 10px;
+}
+.footer-warning{
+  margin:18px auto;
+  padding:10px;
+  border-radius:8px;
+  color:#ffd166;
+  background:#211c10;
+  max-width:600px;
+  font-size:13px;
+}
+.footer-copy{
+  color:#657187;
+  font-size:12px;
+}
+</style>
 </head>
 <body>
 
@@ -391,7 +435,7 @@ body.light-mode input{
 
 
 
-<section class="faq-section">
+<section class="faq-section" id="faq">
   <h2>❓ Frequently Asked Questions</h2>
 
   <details>
@@ -1660,5 +1704,30 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+
+<footer class="site-footer">
+  <div class="footer-brand">✈️ Aviator Analyzer</div>
+
+  <p>
+    Historical multiplier analysis and statistics for entertainment and research.
+  </p>
+
+  <div class="footer-links">
+    <a href="#register">Create Account</a>
+    <a href="#login">Login</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer" target="_blank">
+      WhatsApp Support
+    </a>
+  </div>
+
+  <div class="footer-warning">
+    ⚠️ No guaranteed predictions. Aviator outcomes are random.
+  </div>
+
+  <div class="footer-copy">
+    © 2026 Aviator Analyzer. All rights reserved.
+  </div>
+</footer>
 </body>
 </html>
