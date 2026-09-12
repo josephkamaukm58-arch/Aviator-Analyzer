@@ -1085,15 +1085,26 @@ function restoreAnalysis(event){
 }
 
 
-function showAdminDashboard(){
+async function showAdminDashboard(){
  const adminPin=prompt("Enter Admin PIN:");
 
- if(adminPin!=="2580"){
-   alert("❌ Access denied.");
-   return;
- }
+ if(!adminPin) return;
 
- const existing=document.getElementById("adminDashboard");
+ try{
+   const response=await fetch("/api/admin-login",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({pin:adminPin})
+   });
+
+   const result=await response.json();
+
+   if(!response.ok){
+     alert("❌ Access denied.");
+     return;
+   }
+
+   const existing=document.getElementById("adminDashboard");
  if(existing) existing.remove();
 
  const admin=document.createElement("div");
@@ -1154,6 +1165,10 @@ function showAdminDashboard(){
      document.getElementById("adminUsers").textContent="—";
      document.getElementById("adminRounds").textContent=data.length;
    });
+}
+ }catch(error){
+   alert("❌ Admin server is not available.");
+ }
 }
 
 function logoutUser(){
