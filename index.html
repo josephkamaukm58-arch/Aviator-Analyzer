@@ -733,6 +733,66 @@ body.light-mode input{
   }
 }
 </style>
+
+<style>
+.contact-section{
+  margin:25px 0;
+}
+.contact-card{
+  text-align:center;
+  padding:28px 18px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#111a2b,#172238);
+  border:1px solid #2b3955;
+}
+.contact-icon{
+  font-size:40px;
+}
+.contact-card h2{
+  margin:10px 0;
+}
+.contact-card>p{
+  color:#aeb8c9;
+  line-height:1.6;
+  max-width:600px;
+  margin:0 auto 20px;
+}
+.contact-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:18px;
+}
+.contact-info div{
+  background:#0d1525;
+  border:1px solid #26324a;
+  border-radius:12px;
+  padding:14px;
+}
+.contact-info strong,
+.contact-info span{
+  display:block;
+}
+.contact-info span{
+  margin-top:5px;
+  color:#8f9bb0;
+  font-size:13px;
+}
+.contact-button{
+  display:inline-block;
+  padding:14px 20px;
+  border-radius:10px;
+  background:#20c968;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+@media(max-width:600px){
+  .contact-info{
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
 
 <div id="appLoader">
@@ -810,6 +870,36 @@ body.light-mode input{
       stronger authentication, secure password hashing, database security,
       HTTPS and a complete privacy policy should be implemented.
     </p>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="contact-card">
+    <div class="contact-icon">📞</div>
+    <h2>Contact Aviator Analyzer</h2>
+    <p>
+      Need assistance with your account or the analyzer?
+      Contact our support team through WhatsApp.
+    </p>
+
+    <div class="contact-info">
+      <div>
+        <strong>💬 WhatsApp</strong>
+        <span>0100418787</span>
+      </div>
+
+      <div>
+        <strong>🕒 Support</strong>
+        <span>Contact us through WhatsApp for assistance.</span>
+      </div>
+    </div>
+
+    <a
+      class="contact-button"
+      href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer%20Support"
+      target="_blank">
+      💬 CONTACT SUPPORT
+    </a>
   </div>
 </section>
 <section class="support-section" id="support">
