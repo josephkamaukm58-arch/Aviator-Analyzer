@@ -1,0 +1,10 @@
+{
+  "name": "Aviator Analyzer",
+  "short_name": "Aviator",
+  "description": "Aviator statistics and historical analysis tool.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d18",
+  "theme_color": "#090d18",
+  "icons": []
+}
