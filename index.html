@@ -142,6 +142,47 @@ font-weight:bold;
   }
 }
 </style>
+
+<style>
+body.light-mode{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+body.light-mode .card,
+body.light-mode .dashboard-stat,
+body.light-mode #recentActivity{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#d9dee8 !important;
+}
+body.light-mode .top-nav{
+  background:#ffffff !important;
+  border-color:#d9dee8 !important;
+}
+body.light-mode .top-nav a{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+}
+body.light-mode input{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#ccd3df !important;
+}
+.theme-button{
+  position:fixed;
+  left:18px;
+  bottom:18px;
+  z-index:9999;
+  border:0;
+  border-radius:50px;
+  padding:13px 16px;
+  background:#172238;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+  box-shadow:0 5px 20px #0006;
+}
+</style>
 </head>
 <body>
 
@@ -960,5 +1001,26 @@ href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer"
 target="_blank">
 💬 WhatsApp Support
 </a>
+
+<script>
+function toggleTheme(){
+  document.body.classList.toggle("light-mode");
+  const light=document.body.classList.contains("light-mode");
+  localStorage.setItem("aviatorTheme",light?"light":"dark");
+  document.getElementById("themeButton").textContent=light?"🌙 Dark Mode":"☀️ Light Mode";
+}
+
+window.addEventListener("load",function(){
+  const light=localStorage.getItem("aviatorTheme")==="light";
+  if(light) document.body.classList.add("light-mode");
+
+  const btn=document.getElementById("themeButton");
+  if(btn) btn.textContent=light?"🌙 Dark Mode":"☀️ Light Mode";
+});
+</script>
+
+<button id="themeButton" class="theme-button" onclick="toggleTheme()">
+☀️ Light Mode
+</button>
 </body>
 </html>
