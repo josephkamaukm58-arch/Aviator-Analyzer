@@ -198,6 +198,12 @@ body.light-mode input{
 .connection-waiting{color:#ffd166}
 .connection-offline{color:#ff6b6b}
 </style>
+
+<style>
+.mult-low{color:#ff6b6b}
+.mult-medium{color:#ffd166}
+.mult-high{color:#55e28b}
+</style>
 </head>
 <body>
 
@@ -987,7 +993,7 @@ function updateRecentActivity(){
  recent.forEach((value,index)=>{
    const row=document.createElement("div");
    row.style.cssText="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #26324a";
-   row.innerHTML="<span>Round "+(index+1)+"</span><strong>"+Number(value).toFixed(2)+"×</strong>";
+   row.innerHTML="<span>Round "+(index+1)+"</span><strong class="'+multiplierClass(value)+'">'+Number(value).toFixed(2)+"×</strong>";
    box.appendChild(row);
  });
 }
@@ -1017,6 +1023,15 @@ function exportAnalysis(){
  URL.revokeObjectURL(url);
 }
 
+
+function multiplierClass(value){
+ const n=Number(value);
+
+ if(n<2) return "mult-low";
+ if(n<5) return "mult-medium";
+ return "mult-high";
+}
+
 function filterHistory(){
  const input=document.getElementById("historySearch");
  const list=document.getElementById("history");
@@ -1039,7 +1054,7 @@ function filterHistory(){
  filtered.slice(0,50).forEach((value,index)=>{
    const row=document.createElement("div");
    row.style.cssText="padding:8px 0;border-bottom:1px solid #26324a;display:flex;justify-content:space-between";
-   row.innerHTML="<span>Round "+(index+1)+"</span><strong>"+Number(value).toFixed(2)+"×</strong>";
+   row.innerHTML="<span>Round "+(index+1)+"</span><strong class="'+multiplierClass(value)+'">'+Number(value).toFixed(2)+"×</strong>";
    list.appendChild(row);
  });
 }
