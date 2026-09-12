@@ -1,0 +1,75 @@
+import os
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+import json, hashlib
+
+class Handler(SimpleHTTPRequestHandler):
+    def do_POST(self):
+        if self.path == "/api/register":
+            length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(length) or "{}")
+
+            name = str(body.get("name", "")).strip()
+            phone = str(body.get("phone", "")).strip()
+            email = str(body.get("email", "")).strip().lower()
+            password = str(body.get("password", ""))
+
+            if not name or not phone or not email or len(password) < 6:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": False,
+                    "message": "Complete all fields. Password must be at least 6 characters."
+                }).encode())
+                return
+
+            users_file = Path("api/users.json")
+            users = json.loads(users_file.read_text() or "[]")
+
+            if any(u["email"] == email for u in users):
+                self.send_response(409)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": False,
+                    "message": "An account with this email already exists."
+                }).encode())
+                return
+
+            password_hash = hashlib.sha256(password.encode()).hexdigest()
+
+            users.append({
+                "name": name,
+                "phone": phone,
+                "email": email,
+                "password_hash": password_hash
+            })
+
+            users_file.write_text(json.dumps(users, indent=2))
+
+            self.send_response(201)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "message": "Account created successfully."
+            }).encode())
+            return
+
+    def do_GET(self):
+        if self.path == "/api/status":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "connected": bool(os.environ.get("AVIATOR_API_KEY")),
+                "status": "connected" if os.environ.get("AVIATOR_API_KEY") else "waiting",
+                "message": "Authorized live data source required"
+            }).encode())
+            return
+        super().do_GET()
+
+os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+port = int(os.environ.get("PORT", 8000))
+print(f"Aviator Analyzer running on port {port}")
+ThreadingHTTPServer(("0.0.0.0", port), Handler).serve_forever()

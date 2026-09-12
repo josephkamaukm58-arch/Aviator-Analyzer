@@ -582,24 +582,43 @@ updateAdvancedStats();
 </script>
 
 <script>
-function registerUser(e){
+async function registerUser(e){
  e.preventDefault();
 
  const name=document.getElementById("regName").value.trim();
  const phone=document.getElementById("regPhone").value.trim();
  const email=document.getElementById("regEmail").value.trim();
  const password=document.getElementById("regPassword").value;
+ const message=document.getElementById("registerMessage");
 
- localStorage.setItem("aviatorUser",JSON.stringify({
-   name:name,
-   phone:phone,
-   email:email
- }));
+ message.textContent="Creating account...";
 
- document.getElementById("registerMessage").innerHTML=
-   "✅ Account created successfully, "+name+"!";
+ try{
+   const response=await fetch("/api/register",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({name,phone,email,password})
+   });
 
- e.target.reset();
+   const result=await response.json();
+
+   if(!response.ok){
+     message.textContent="❌ "+result.message;
+     return;
+   }
+
+   localStorage.setItem("aviatorUser",JSON.stringify({
+     name:name,
+     phone:phone,
+     email:email
+   }));
+
+   message.textContent="✅ "+result.message;
+   e.target.reset();
+
+ }catch(error){
+   message.textContent="❌ Registration server is not available.";
+ }
 }
 </script>
 
