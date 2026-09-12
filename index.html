@@ -507,6 +507,49 @@ body.light-mode input{
   margin-top:5px;
 }
 </style>
+
+<style>
+.mobile-bottom-nav{
+  position:fixed;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  z-index:9998;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  background:#0b1020;
+  border:1px solid #2b3955;
+  border-radius:16px;
+  padding:8px 5px;
+  box-shadow:0 8px 30px #0009;
+}
+.mobile-bottom-nav a{
+  color:#cbd5e1;
+  text-decoration:none;
+  text-align:center;
+  font-size:11px;
+  padding:7px 9px;
+  border-radius:10px;
+}
+.mobile-bottom-nav a:hover{
+  background:#172238;
+  color:white;
+}
+.mobile-bottom-nav span{
+  display:block;
+  font-size:19px;
+  margin-bottom:2px;
+}
+@media(min-width:700px){
+  .mobile-bottom-nav{
+    left:50%;
+    right:auto;
+    width:520px;
+    transform:translateX(-50%);
+  }
+}
+</style>
 </head>
 <body>
 
@@ -1887,5 +1930,12 @@ if ("serviceWorker" in navigator) {
     © 2026 Aviator Analyzer. All rights reserved.
   </div>
 </footer>
+
+<nav class="mobile-bottom-nav" aria-label="Quick navigation">
+  <a href="#"><span>🏠</span>Home</a>
+  <a href="#predictionCard"><span>📊</span>Analyze</a>
+  <a href="#userDashboard"><span>👤</span>Account</a>
+  <a href="#support"><span>💬</span>Support</a>
+</nav>
 </body>
 </html>
