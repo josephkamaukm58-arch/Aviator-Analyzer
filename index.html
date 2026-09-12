@@ -156,5 +156,62 @@ update=function(){
 };
 update();
 </script>
+
+
+<script>
+function updatePrediction(){
+ const range=document.getElementById("predictionRange");
+ const confidence=document.getElementById("confidence");
+ const risk=document.getElementById("risk");
+ const recommendation=document.getElementById("recommendation");
+
+ if(data.length<10){
+   range.textContent="--";
+   confidence.textContent="Confidence: Need 10+ rounds";
+   risk.textContent="Risk: Unknown";
+   recommendation.textContent="Add more rounds";
+   return;
+ }
+
+ const recent=data.slice(0,20);
+ const avg=recent.reduce((a,b)=>a+b,0)/recent.length;
+ const low=recent.filter(x=>x<2).length;
+ const high=recent.filter(x=>x>=5).length;
+
+ let lowEstimate=Math.max(1.01,Math.min(2.5,avg*0.55));
+ let highEstimate=Math.max(lowEstimate+0.25,Math.min(8,avg*1.25));
+
+ let conf="Low";
+ let riskLevel="High";
+ let rec="👀 OBSERVE";
+
+ if(recent.length>=20 && high>=3 && low<12){
+   conf="Medium";
+   riskLevel="High";
+   rec="⚠️ CAUTION";
+ }else if(low>=14){
+   conf="Low";
+   riskLevel="Very High";
+   rec="🛑 WAIT";
+ }else if(avg>=2.5){
+   conf="Medium";
+   riskLevel="High";
+   rec="⚠️ CAUTION";
+ }
+
+ range.textContent=lowEstimate.toFixed(2)+"× – "+highEstimate.toFixed(2)+"×";
+ confidence.textContent="Confidence: "+conf;
+ risk.textContent="Risk: "+riskLevel;
+ recommendation.textContent="Signal: "+rec;
+}
+
+const originalUpdatePrediction=updatePrediction;
+const originalUpdateFunction=update;
+update=function(){
+ originalUpdateFunction();
+ updatePrediction();
+};
+updatePrediction();
+</script>
 </body>
 </html>
