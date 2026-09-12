@@ -135,6 +135,36 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
 
+
+        if self.path == "/api/admin-users":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+
+            try:
+                with open("api/users.json","r",encoding="utf-8") as f:
+                    users=json.load(f)
+
+                safe_users=[
+                    {
+                        "name":u.get("name",""),
+                        "phone":u.get("phone",""),
+                        "email":u.get("email","")
+                    }
+                    for u in users
+                ]
+
+                self.wfile.write(json.dumps({
+                    "users":safe_users
+                }).encode())
+
+            except Exception:
+                self.wfile.write(json.dumps({
+                    "users":[]
+                }).encode())
+
+            return
+
         if self.path == "/api/admin-stats":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
