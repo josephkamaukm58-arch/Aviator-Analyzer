@@ -883,6 +883,55 @@ body.light-mode input{
   font-weight:bold;
 }
 </style>
+
+<style>
+.storage-notice{
+  position:fixed;
+  left:12px;
+  right:12px;
+  bottom:78px;
+  z-index:9997;
+  background:#111a2b;
+  border:1px solid #2b3955;
+  border-radius:14px;
+  padding:15px;
+  box-shadow:0 8px 30px #0009;
+  display:none;
+}
+.storage-notice.show{
+  display:block;
+}
+.storage-notice strong{
+  display:block;
+  margin-bottom:6px;
+}
+.storage-notice p{
+  color:#aeb8c9;
+  font-size:12px;
+  line-height:1.5;
+  margin:0 0 10px;
+}
+.storage-actions{
+  display:flex;
+  gap:8px;
+}
+.storage-actions button{
+  flex:1;
+  border:0;
+  border-radius:9px;
+  padding:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.storage-ok{
+  background:#20c968;
+  color:white;
+}
+.storage-info{
+  background:#26324a;
+  color:white;
+}
+</style>
 </head>
 
 
@@ -2484,5 +2533,37 @@ document.addEventListener("click",async function(event){
     <a class="error-home" href="/">✈️ BACK TO ANALYZER</a>
   </div>
 </section>
+
+<div class="storage-notice" id="storageNotice">
+  <strong>💾 Your browser storage</strong>
+  <p>
+    Aviator Analyzer uses browser storage to remember analysis history,
+    theme preferences and some account-session information on this device.
+  </p>
+  <div class="storage-actions">
+    <button class="storage-ok" onclick="acceptStorageNotice()">OK</button>
+    <button class="storage-info" onclick="location.hash='privacy';hideStorageNotice()">Privacy</button>
+  </div>
+</div>
+
+<script>
+function hideStorageNotice(){
+  const notice=document.getElementById("storageNotice");
+  if(notice) notice.classList.remove("show");
+}
+
+function acceptStorageNotice(){
+  localStorage.setItem("aviatorStorageNotice","accepted");
+  hideStorageNotice();
+  showToast("✅ Storage notice acknowledged.","success");
+}
+
+window.addEventListener("load",function(){
+  if(localStorage.getItem("aviatorStorageNotice")!=="accepted"){
+    const notice=document.getElementById("storageNotice");
+    if(notice) notice.classList.add("show");
+  }
+});
+</script>
 </body>
 </html>
