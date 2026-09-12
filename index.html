@@ -2478,6 +2478,629 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+
+<section class="visual-showcase" id="visualShowcase">
+  <div class="showcase-header">
+    <span>✈️ AVIATOR ANALYZER</span>
+    <h2>Powerful Analysis. Simple Experience.</h2>
+    <p>Everything you need to organize your multiplier history and understand your previous rounds.</p>
+  </div>
+
+  <div class="visual-grid">
+    <div class="visual-card">
+      <div class="visual-art chart-art">
+        <div class="chart-line"></div>
+        <div class="chart-bars">
+          <i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <h3>📈 Visual Statistics</h3>
+      <p>See your historical multiplier data in an easy-to-understand format.</p>
+    </div>
+
+    <div class="visual-card">
+      <div class="visual-art plane-art">✈️</div>
+      <h3>✈️ Aviator Dashboard</h3>
+      <p>Track rounds, trends, risk indicators and account activity from one place.</p>
+    </div>
+
+    <div class="visual-card">
+      <div class="visual-art security-art">
+        <div>🔐</div>
+        <strong>DATA</strong>
+        <small>PROTECTED</small>
+      </div>
+      <h3>🔒 Account Area</h3>
+      <p>Manage your account information and keep your analysis organized.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.visual-showcase{
+  margin:30px 0;
+}
+
+.showcase-header{
+  text-align:center;
+  padding:28px 18px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#10182a,#18243a);
+  border:1px solid #2b3955;
+}
+
+.showcase-header span{
+  color:#ff5148;
+  font-size:13px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+.showcase-header h2{
+  margin:10px 0;
+  font-size:28px;
+}
+
+.showcase-header p{
+  color:#aeb8c9;
+  max-width:600px;
+  margin:auto;
+  line-height:1.6;
+}
+
+.visual-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:15px;
+}
+
+.visual-card{
+  padding:16px;
+  border-radius:16px;
+  background:#111a2b;
+  border:1px solid #2b3955;
+}
+
+.visual-art{
+  height:150px;
+  border-radius:13px;
+  background:#0a1020;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.plane-art{
+  font-size:70px;
+}
+
+.security-art{
+  flex-direction:column;
+  font-size:40px;
+}
+
+.security-art strong{
+  font-size:15px;
+  margin-top:5px;
+}
+
+.security-art small{
+  color:#20c968;
+  font-size:10px;
+}
+
+.chart-art{
+  position:relative;
+  align-items:flex-end;
+  padding:20px;
+  gap:10px;
+}
+
+.chart-bars{
+  display:flex;
+  align-items:flex-end;
+  gap:9px;
+  height:100px;
+}
+
+.chart-bars i{
+  display:block;
+  width:18px;
+  border-radius:4px 4px 0 0;
+  background:#ff3b30;
+}
+
+.chart-bars i:nth-child(1){height:35px}
+.chart-bars i:nth-child(2){height:65px}
+.chart-bars i:nth-child(3){height:45px}
+.chart-bars i:nth-child(4){height:90px}
+.chart-bars i:nth-child(5){height:72px}
+
+.chart-line{
+  position:absolute;
+  width:130px;
+  height:70px;
+  border-top:3px solid #ffd166;
+  transform:rotate(-12deg);
+  top:45px;
+  left:48px;
+}
+
+.visual-card h3{
+  margin:14px 0 6px;
+}
+
+.visual-card p{
+  color:#aeb8c9;
+  line-height:1.5;
+  font-size:14px;
+}
+
+@media(max-width:700px){
+  .visual-grid{
+    grid-template-columns:1fr;
+  }
+
+  .showcase-header h2{
+    font-size:23px;
+  }
+}
+</style>
+
+<section class="activity-monitor" id="activityMonitor">
+  <div class="activity-header">
+    <div>
+      <span class="activity-label">SYSTEM ACTIVITY</span>
+      <h2>⚡ Analyzer Monitor</h2>
+    </div>
+    <span id="activityDot" class="activity-dot"></span>
+  </div>
+
+  <div class="activity-grid">
+    <div class="activity-item">
+      <small>STATUS</small>
+      <strong id="activityStatus">ONLINE</strong>
+    </div>
+
+    <div class="activity-item">
+      <small>ROUNDS</small>
+      <strong id="activityRounds">0</strong>
+    </div>
+
+    <div class="activity-item">
+      <small>LAST CHECK</small>
+      <strong id="activityTime">--</strong>
+    </div>
+  </div>
+</section>
+
+<style>
+.activity-monitor{
+  margin:20px 0;
+  padding:18px;
+  border-radius:16px;
+  background:#111a2b;
+  border:1px solid #2b3955;
+}
+
+.activity-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.activity-header h2{
+  margin:5px 0 0;
+}
+
+.activity-label{
+  font-size:11px;
+  color:#aeb8c9;
+  letter-spacing:1px;
+}
+
+.activity-dot{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background:#20c968;
+  box-shadow:0 0 12px #20c968;
+}
+
+.activity-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:15px;
+}
+
+.activity-item{
+  padding:13px;
+  border-radius:11px;
+  background:#0b1221;
+  text-align:center;
+}
+
+.activity-item small{
+  display:block;
+  color:#8f9bb0;
+  font-size:10px;
+}
+
+.activity-item strong{
+  display:block;
+  margin-top:5px;
+  font-size:17px;
+}
+
+@media(max-width:600px){
+  .activity-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+<script>
+function updateActivityMonitor(){
+  const rounds=document.getElementById("activityRounds");
+  const time=document.getElementById("activityTime");
+  const status=document.getElementById("activityStatus");
+  const dot=document.getElementById("activityDot");
+
+  if(rounds) rounds.textContent=Array.isArray(data) ? data.length : 0;
+
+  if(time){
+    time.textContent=new Date().toLocaleTimeString("en-KE");
+  }
+
+  if(status) status.textContent="ONLINE";
+
+  if(dot){
+    dot.style.background="#20c968";
+    dot.style.boxShadow="0 0 12px #20c968";
+  }
+}
+
+window.addEventListener("load",updateActivityMonitor);
+setInterval(updateActivityMonitor,5000);
+</script>
+
+<section class="quick-start" id="quickStart">
+  <div class="quick-start-card">
+    <div class="quick-start-icon">🚀</div>
+    <span class="quick-start-label">QUICK START</span>
+    <h2>Ready to Analyze Your Rounds?</h2>
+    <p>
+      Enter historical multiplier results, review your statistics,
+      and explore your stored analysis.
+    </p>
+
+    <div class="quick-start-actions">
+      <a href="#predictionCard">📊 START ANALYZING</a>
+      <a href="#register">👤 CREATE ACCOUNT</a>
+    </div>
+
+    <div class="responsible-note">
+      ⚠️ Historical analysis cannot guarantee or predict future random game outcomes.
+      Never risk money you cannot afford to lose.
+    </div>
+  </div>
+</section>
+
+<style>
+.quick-start{
+  margin:30px 0;
+}
+
+.quick-start-card{
+  text-align:center;
+  padding:32px 20px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#111a2b,#1b263b);
+  border:1px solid #2b3955;
+}
+
+.quick-start-icon{
+  font-size:45px;
+}
+
+.quick-start-label{
+  display:block;
+  margin-top:8px;
+  color:#ff5148;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1.5px;
+}
+
+.quick-start-card h2{
+  font-size:26px;
+  margin:10px 0;
+}
+
+.quick-start-card p{
+  color:#aeb8c9;
+  max-width:580px;
+  margin:0 auto 20px;
+  line-height:1.6;
+}
+
+.quick-start-actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.quick-start-actions a{
+  display:inline-block;
+  padding:13px 18px;
+  border-radius:10px;
+  background:#ff3b30;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.quick-start-actions a:nth-child(2){
+  background:#172238;
+  border:1px solid #2b3955;
+}
+
+.responsible-note{
+  margin:20px auto 0;
+  max-width:650px;
+  padding:12px;
+  border-radius:10px;
+  background:#171a20;
+  color:#ffd166;
+  font-size:13px;
+  line-height:1.5;
+}
+
+@media(max-width:500px){
+  .quick-start-actions{
+    flex-direction:column;
+  }
+
+  .quick-start-actions a{
+    width:auto;
+  }
+
+  .quick-start-card h2{
+    font-size:22px;
+  }
+}
+</style>
+
+<div class="mobile-menu-wrap">
+  <button id="mobileMenuButton" class="mobile-menu-button" type="button"
+    aria-expanded="false" aria-controls="mobileMenu">
+    ☰ MENU
+  </button>
+
+  <div id="mobileMenu" class="mobile-menu" hidden>
+    <a href="#about">ℹ️ About</a>
+    <a href="#predictionCard">📊 Analyzer</a>
+    <a href="#register">👤 Register</a>
+    <a href="#login">🔐 Login</a>
+    <a href="#status">🟢 System Status</a>
+    <a href="#faq">❓ FAQ</a>
+    <a href="#support">💬 Support</a>
+  </div>
+</div>
+
+<style>
+.mobile-menu-wrap{
+  display:none;
+  position:relative;
+  margin:8px 10px;
+  z-index:2000;
+}
+
+.mobile-menu-button{
+  width:100%;
+  padding:13px;
+  border:1px solid #2b3955;
+  border-radius:11px;
+  background:#172238;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.mobile-menu{
+  margin-top:7px;
+  padding:7px;
+  border:1px solid #2b3955;
+  border-radius:12px;
+  background:#0b1020;
+  box-shadow:0 10px 25px #0008;
+}
+
+.mobile-menu a{
+  display:block;
+  padding:12px;
+  border-radius:8px;
+  color:white;
+  text-decoration:none;
+}
+
+.mobile-menu a:hover{
+  background:#172238;
+}
+
+@media(max-width:699px){
+  .mobile-menu-wrap{
+    display:block;
+  }
+}
+</style>
+
+<script>
+(function(){
+  const button=document.getElementById("mobileMenuButton");
+  const menu=document.getElementById("mobileMenu");
+
+  if(!button || !menu) return;
+
+  button.addEventListener("click",function(){
+    const isOpen=button.getAttribute("aria-expanded")==="true";
+    button.setAttribute("aria-expanded",String(!isOpen));
+    menu.hidden=isOpen;
+  });
+
+  menu.querySelectorAll("a").forEach(function(link){
+    link.addEventListener("click",function(){
+      menu.hidden=true;
+      button.setAttribute("aria-expanded","false");
+    });
+  });
+})();
+</script>
+
+<section class="feedback-section" id="feedback">
+  <div class="feedback-card">
+    <span class="feedback-label">CONTACT</span>
+    <h2>💬 Send Us a Message</h2>
+    <p>Have a question or found a problem? Send a message to the support system.</p>
+
+    <form id="feedbackForm">
+      <input id="feedbackName" type="text" placeholder="Your Name" required>
+      <input id="feedbackEmail" type="email" placeholder="Your Email" required>
+      <input id="feedbackPhone" type="tel" inputmode="tel" placeholder="WhatsApp Number (e.g. 0712345678)" required>
+      <textarea id="feedbackMessage" placeholder="Write your message..." rows="5" required></textarea>
+      <button type="submit">📨 SEND MESSAGE</button>
+    </form>
+
+    <div id="feedbackResult"></div>
+  </div>
+</section>
+
+<style>
+.feedback-section{
+  margin:30px 0;
+}
+
+.feedback-card{
+  padding:25px 18px;
+  border-radius:17px;
+  background:#111a2b;
+  border:1px solid #2b3955;
+}
+
+.feedback-label{
+  color:#ff5148;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+.feedback-card h2{
+  margin:8px 0;
+}
+
+.feedback-card p{
+  color:#aeb8c9;
+  line-height:1.5;
+}
+
+.feedback-card form{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+}
+
+.feedback-card input,
+.feedback-card textarea{
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  border-radius:9px;
+  border:1px solid #2b3955;
+  background:#0b1221;
+  color:white;
+  font:inherit;
+}
+
+.feedback-card textarea{
+  resize:vertical;
+}
+
+.feedback-card button{
+  padding:13px;
+  border:0;
+  border-radius:9px;
+  background:#ff3b30;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#feedbackResult{
+  margin-top:12px;
+  text-align:center;
+  color:#20c968;
+}
+</style>
+
+<script>
+(function(){
+  const form=document.getElementById("feedbackForm");
+  const result=document.getElementById("feedbackResult");
+
+  if(!form) return;
+
+  form.addEventListener("submit",async function(event){
+    event.preventDefault();
+
+    const name=document.getElementById("feedbackName").value.trim();
+    const email=document.getElementById("feedbackEmail").value.trim();
+    const phone=document.getElementById("feedbackPhone").value.trim();
+    const message=document.getElementById("feedbackMessage").value.trim();
+
+    result.textContent="Sending...";
+
+    try{
+      const response=await fetch("/api/feedback",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name,email,phone,message})
+      });
+
+      const data=await response.json();
+
+      if(!response.ok){
+        throw new Error(data.message || "Message failed");
+      }
+
+      result.textContent="✅ Message sent successfully.";
+      form.reset();
+    }catch(error){
+      result.textContent="❌ Message could not be sent. Please use WhatsApp support.";
+    }
+  });
+})();
+</script>
+
+<div class="card" id="adminInbox" style="margin-top:15px">
+  <h2>📬 Admin Inbox <span id="adminUnreadCount" style="font-size:13px;color:#ff6b61">🔴 0 unread</span></h2>
+  <p style="color:#aeb8c9">Messages submitted through the website.</p>
+  <input id="adminMessageSearch" type="search"
+    placeholder="🔎 Search name, email, WhatsApp or message..."
+    style="width:100%;box-sizing:border-box;margin:10px 0;padding:12px;border-radius:9px;border:1px solid #2b3955;background:#0b1221;color:white">
+
+  <button type="button" onclick="loadAdminInbox()"
+    style="padding:11px 15px;border:0;border-radius:9px;background:#ff3b30;color:white;font-weight:bold">
+    🔄 REFRESH MESSAGES
+  </button>
+  <div id="adminInboxContent" style="margin-top:10px">
+    📭 Click refresh to load messages.
+  </div>
+</div>
 <footer class="site-footer">
   <div class="footer-brand">✈️ Aviator Analyzer</div>
 
@@ -2859,3 +3482,219 @@ function forgotPassword(){
 </script>
 </body>
 </html>
+
+<script>
+
+async function loadServerRounds(){
+  try{
+    const response=await fetch("/api/rounds");
+    if(!response.ok) throw new Error("Failed");
+
+    const result=await response.json();
+
+    if(Array.isArray(result.rounds) && result.rounds.length){
+      data=result.rounds
+        .map(Number)
+        .filter(v=>Number.isFinite(v) && v>0);
+
+      localStorage.setItem("aviatorRounds",JSON.stringify(data));
+
+      update();
+      updatePrediction();
+      updateAdvancedStats();
+      showUserDashboard();
+
+      showToast("☁️ Analysis history loaded from server.","success");
+    }
+  }catch(error){
+    console.log("Server history unavailable.");
+  }
+}
+
+window.addEventListener("load",function(){
+  setTimeout(loadServerRounds,500);
+});
+
+</script>
+
+<script>
+
+async function verifyBackendHealth(){
+  try{
+    const response=await fetch("/api/status",{cache:"no-store"});
+    if(!response.ok) throw new Error("Backend error");
+
+    const result=await response.json();
+
+    console.log("✅ Aviator backend:",result);
+
+    const health=document.getElementById("backendHealth");
+    if(health){
+      health.innerHTML=result.connected
+        ? "🟢 Backend ONLINE<br>🟢 Live source CONNECTED"
+        : "🟢 Backend ONLINE<br>🟡 Live source WAITING";
+    }
+  }catch(error){
+    console.error("❌ Backend health check failed:",error);
+
+    const health=document.getElementById("backendHealth");
+    if(health) health.textContent="🔴 Backend OFFLINE";
+  }
+}
+
+window.addEventListener("load",verifyBackendHealth);
+setInterval(verifyBackendHealth,30000);
+
+</script>
+
+<script>
+async function loadAdminInbox(){
+  const existing=document.getElementById("adminInbox");
+  if(!existing) return;
+
+  const content=document.getElementById("adminInboxContent");
+  if(!content) return;
+
+  content.textContent="Loading messages...";
+
+  try{
+    const response=await fetch("/api/admin-feedback");
+    if(!response.ok) throw new Error("Failed");
+
+    const result=await response.json();
+    let messages=Array.isArray(result.messages) ? result.messages : [];
+
+    const searchInput=document.getElementById("adminMessageSearch");
+    const query=searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+    if(query){
+      messages=messages.filter(function(item){
+        return [
+          item.name,
+          item.email,
+          item.phone,
+          item.message
+        ].some(function(value){
+          return String(value || "").toLowerCase().includes(query);
+        });
+      });
+    }
+
+    if(!messages.length){
+      content.innerHTML='<div style="color:#aeb8c9;padding:12px">📭 No messages yet.</div>';
+      return;
+    }
+
+    content.innerHTML="";
+
+    messages.slice().reverse().forEach(function(item,index){
+      const card=document.createElement("div");
+      card.style.cssText=
+        "background:#111a2b;border:1px solid #2b3955;border-radius:12px;padding:14px;margin-top:10px";
+
+      card.innerHTML=
+        "<strong>📩 Message "+(messages.length-index)+"</strong>"+
+        "<div style='margin-top:6px;color:#ff6b61;font-size:12px'>"+
+        (item.read ? "🟢 READ" : "🔴 UNREAD")+
+        "</div>"+
+        "<div style='margin-top:8px'><b>Name:</b> "+escapeAdminText(item.name)+"</div>"+
+        "<div><b>Email:</b> "+escapeAdminText(item.email)+"</div>"+
+        "<div style='margin-top:8px;color:#cbd5e1;line-height:1.5'>"+
+        escapeAdminText(item.message)+"</div>"+
+        "<a target='_blank' href='https://wa.me/254100418787?text="+
+        encodeURIComponent("Hello "+item.name+", thank you for contacting Aviator Analyzer. We received your message.\n\nYour message: "+item.message+"\n\nWe will assist you shortly.")+
+        "' style='display:block;margin-top:12px;text-align:center;padding:11px;border-radius:9px;background:#20c968;color:white;text-decoration:none;font-weight:bold'>"+
+        "💬 REPLY ON WHATSAPP</a>"+
+        "<div style='display:flex;gap:6px;flex-wrap:wrap;margin-top:8px'>"+
+        "<button type='button' onclick='quickWhatsAppReply("+JSON.stringify(item.name)+","+JSON.stringify("Hello, thank you for contacting Aviator Analyzer. How can we help you today?")+","+JSON.stringify(item.phone || "")+")' style='flex:1;padding:9px;border:0;border-radius:8px;background:#172238;color:white'>👋 Greeting</button>"+
+        "<button type='button' onclick='quickWhatsAppReply("+JSON.stringify(item.name)+","+JSON.stringify("Hello, we received your message and are checking it now. We will get back to you shortly.")+","+JSON.stringify(item.phone || "")+")' style='flex:1;padding:9px;border:0;border-radius:8px;background:#172238;color:white'>⏳ Received</button>"+
+        "<button type='button' onclick='quickWhatsAppReply("+JSON.stringify(item.name)+","+JSON.stringify("Hello, thank you for your message. Please tell us more details so we can assist you.")+","+JSON.stringify(item.phone || "")+")' style='flex:1;padding:9px;border:0;border-radius:8px;background:#172238;color:white'>❓ Details</button>"+
+        "</div>";
+
+      const readButton=document.createElement("button");
+      readButton.type="button";
+      readButton.textContent=item.read ? "🟢 READ" : "✓ MARK AS READ";
+      readButton.style.cssText="margin-top:10px;padding:9px;border:0;border-radius:8px;background:#172238;color:white;font-weight:bold;cursor:pointer";
+      readButton.onclick=async function(){
+        try{
+          const originalIndex=messages.indexOf(item);
+
+          const response=await fetch("/api/admin-feedback-read",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({index:originalIndex})
+          });
+
+          if(!response.ok) throw new Error("Update failed");
+
+          item.read=true;
+          loadAdminInbox();
+        }catch(error){
+          alert("❌ Could not save read status.");
+        }
+      };
+      card.appendChild(readButton);
+
+      content.appendChild(card);
+    });
+
+    const unread=messages.filter(function(m){return !m.read;}).length;
+    const counter=document.getElementById("adminUnreadCount");
+    if(counter) counter.textContent="🔴 "+unread+" unread";
+
+  }catch(error){
+    content.textContent="❌ Unable to load messages.";
+  }
+}
+
+function escapeAdminText(value){
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+</script>
+
+<script>
+function quickWhatsAppReply(name,message,phone){
+  let number=String(phone || "").replace(/[^0-9]/g,"");
+
+  if(number.startsWith("0")){
+    number="254"+number.substring(1);
+  }
+
+  if(!number.startsWith("254")){
+    alert("Please check the visitor's WhatsApp number.");
+    return;
+  }
+
+  const text="Hello "+name+", "+message;
+
+  window.open(
+    "https://wa.me/"+number+"?text="+encodeURIComponent(text),
+    "_blank"
+  );
+}
+</script>
+
+<script>
+
+let adminInboxAutoRefresh=null;
+
+function startAdminInboxAutoRefresh(){
+  if(adminInboxAutoRefresh) clearInterval(adminInboxAutoRefresh);
+
+  adminInboxAutoRefresh=setInterval(function(){
+    const inbox=document.getElementById("adminInbox");
+
+    if(inbox){
+      loadAdminInbox();
+    }
+  },15000);
+}
+
+window.addEventListener("load",startAdminInboxAutoRefresh);
+
+</script>

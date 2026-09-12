@@ -36,7 +36,64 @@ class Handler(SimpleHTTPRequestHandler):
             return
 
 
+    def save_feedback(self, body):
+        feedback_file = os.path.join(os.path.dirname(__file__), "feedback.json")
+
+        try:
+            with open(feedback_file, "r") as f:
+                messages = json.load(f)
+        except:
+            messages = []
+
+        messages.append({
+            "name": str(body.get("name", "")).strip(),
+            "email": str(body.get("email", "")).strip(),
+            "phone": str(body.get("phone", "")).strip(),
+            "message": str(body.get("message", "")).strip(),
+            "created_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
+            "read": False
+        })
+
+        with open(feedback_file, "w") as f:
+            json.dump(messages, f, indent=2)
+
+        return len(messages)
+
     def do_POST(self):
+        if self.path == "/api/feedback":
+            length = int(self.headers.get("Content-Length", "0"))
+
+            try:
+                body = json.loads(self.rfile.read(length) or b"{}")
+            except:
+                body = {}
+
+            name=str(body.get("name","")).strip()
+            email=str(body.get("email","")).strip()
+            phone=str(body.get("phone","")).strip()
+            message=str(body.get("message","")).strip()
+
+            if not name or not email or not phone or not message:
+                self.send_response(400)
+                self.send_header("Content-Type","application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "message":"All fields are required."
+                }).encode())
+                return
+
+            total=self.save_feedback(body)
+
+            self.send_response(200)
+            self.send_header("Content-Type","application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "saved":True,
+                "total":total,
+                "message":"Feedback received."
+            }).encode())
+            return
+
         if self.path == "/api/register":
             length = int(self.headers.get("Content-Length", 0))
             body = json.loads(self.rfile.read(length) or "{}")
@@ -133,8 +190,111 @@ class Handler(SimpleHTTPRequestHandler):
             }).encode())
             return
 
-    def do_GET(self):
+    def do_POST(self):
+        if self.path == "/api/rounds":
+            import json
+            length = int(self.headers.get("Content-Length", "0"))
+            body = json.loads(self.rfile.read(length) or b"{}")
+            multiplier = body.get("multiplier")
 
+            try:
+                multiplier = float(multiplier)
+                if multiplier <= 0:
+                    raise ValueError
+            except:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"message":"Invalid multiplier"}).encode())
+                return
+
+            rounds_file = os.path.join(os.path.dirname(__file__), "rounds.json")
+            try:
+                with open(rounds_file, "r") as f:
+                    rounds = json.load(f)
+            except:
+                rounds = []
+
+            rounds.append(multiplier)
+
+            with open(rounds_file, "w") as f:
+                json.dump(rounds, f)
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "saved": True,
+                "multiplier": multiplier,
+                "total": len(rounds)
+            }).encode())
+            return
+
+        super().do_GET()
+
+
+
+
+        if self.path == "/api/admin-feedback-read":
+            length = int(self.headers.get("Content-Length", "0"))
+
+            try:
+                body = json.loads(self.rfile.read(length) or b"{}")
+                index = int(body.get("index", -1))
+            except:
+                index = -1
+
+            feedback_file = os.path.join(os.path.dirname(__file__), "feedback.json")
+
+            try:
+                with open(feedback_file, "r") as f:
+                    messages = json.load(f)
+            except:
+                messages = []
+
+            if index < 0 or index >= len(messages):
+                self.send_response(400)
+                self.send_header("Content-Type","application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"message":"Invalid message"}).encode())
+                return
+
+            messages[index]["read"] = True
+
+            with open(feedback_file, "w") as f:
+                json.dump(messages, f, indent=2)
+
+            self.send_response(200)
+            self.send_header("Content-Type","application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"updated":True}).encode())
+            return
+
+        if self.path == "/api/admin-feedback":
+            feedback_file = os.path.join(os.path.dirname(__file__), "feedback.json")
+
+            try:
+                with open(feedback_file, "r") as f:
+                    messages = json.load(f)
+            except:
+                messages = []
+
+            safe_messages = []
+            for item in messages:
+                safe_messages.append({
+                    "name": item.get("name", ""),
+                    "email": item.get("email", ""),
+                    "message": item.get("message", "")
+                })
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "messages": safe_messages,
+                "total": len(safe_messages)
+            }).encode())
+            return
 
         if self.path == "/api/admin-users":
             self.send_response(200)
