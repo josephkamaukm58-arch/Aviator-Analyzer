@@ -1497,6 +1497,11 @@ LOG OUT
 <button type="button" class="password-toggle" onclick="togglePassword('regPassword',this)">SHOW</button>
 </div>
 <div id="passwordStrength" class="password-strength"></div>
+<div class="password-wrap">
+  <input id="regConfirmPassword" type="password" placeholder="Confirm Password" required>
+  <button type="button" class="password-toggle" onclick="togglePassword('regConfirmPassword',this)">SHOW</button>
+</div>
+<div id="passwordMatch" class="password-strength"></div>
 <button type="submit">CREATE ACCOUNT</button>
 </form>
 <div id="registerMessage" style="margin-top:12px;text-align:center"></div>
@@ -1910,7 +1915,14 @@ async function registerUser(e){
  const phone=document.getElementById("regPhone").value.trim();
  const email=document.getElementById("regEmail").value.trim();
  const password=document.getElementById("regPassword").value;
+ const confirmPassword=document.getElementById("regConfirmPassword").value;
  const message=document.getElementById("registerMessage");
+
+ if(password!==confirmPassword){
+   message.textContent="❌ Passwords do not match.";
+   showToast("❌ Passwords do not match.","error");
+   return;
+ }
 
  message.textContent="Creating account...";
 
@@ -2746,6 +2758,38 @@ function checkPasswordStrength(){
 document.addEventListener("input",function(event){
   if(event.target && event.target.id==="regPassword"){
     checkPasswordStrength();
+  }
+});
+</script>
+
+<script>
+function checkPasswordMatch(){
+  const password=document.getElementById("regPassword");
+  const confirm=document.getElementById("regConfirmPassword");
+  const output=document.getElementById("passwordMatch");
+
+  if(!password || !confirm || !output) return;
+
+  if(!confirm.value){
+    output.textContent="";
+    return;
+  }
+
+  if(password.value===confirm.value){
+    output.textContent="🟢 Passwords match";
+    output.className="password-strength strength-strong";
+  }else{
+    output.textContent="🔴 Passwords do not match";
+    output.className="password-strength strength-weak";
+  }
+}
+
+document.addEventListener("input",function(event){
+  if(event.target && (
+    event.target.id==="regPassword" ||
+    event.target.id==="regConfirmPassword"
+  )){
+    checkPasswordMatch();
   }
 });
 </script>
