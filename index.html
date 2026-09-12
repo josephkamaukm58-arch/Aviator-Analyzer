@@ -1375,5 +1375,15 @@ setInterval(updateConnectionBar,15000);
 
 window.addEventListener("load",updateConnectionBar);
 
-</script></body>
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js")
+      .then(() => console.log("Aviator Analyzer service worker active"))
+      .catch(err => console.log("Service worker error:", err));
+  });
+}
+</script>
+</body>
 </html>
