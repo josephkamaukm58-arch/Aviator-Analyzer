@@ -82,6 +82,29 @@ small{color:#aeb8c9}
 Analysis is based only on recorded history. It cannot predict or guarantee the next random multiplier.
 </small>
 </div>
+<div class="card" id="apiFeedPanel">
+<h2>📡 Live Feed Connection</h2>
+<div style="display:flex;align-items:center;gap:10px;padding:14px;background:#1b263b;border-radius:12px">
+<span id="apiDot" style="font-size:22px">🔴</span>
+<div>
+<div id="apiStatus" style="font-weight:bold">NOT CONNECTED</div>
+<div id="apiDetail" style="font-size:13px;color:#aeb8c9">Waiting for an authorized live data source</div>
+</div>
+</div>
+<div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div style="background:#1b263b;padding:12px;border-radius:10px">
+<div style="font-size:12px;color:#aeb8c9">LAST ROUND</div>
+<div id="apiLastRound" style="font-size:20px;font-weight:bold">--</div>
+</div>
+<div style="background:#1b263b;padding:12px;border-radius:10px">
+<div style="font-size:12px;color:#aeb8c9">LAST UPDATE</div>
+<div id="apiLastUpdate" style="font-size:16px;font-weight:bold">--</div>
+</div>
+</div>
+<small style="display:block;margin-top:12px;color:#aeb8c9">
+A real feed must be provided by an authorized game/data provider. This panel never invents live rounds.
+</small>
+</div>
 <div class="card" id="liveTracker">
 <h2>🔴 Live Round Tracker</h2>
 
@@ -450,6 +473,52 @@ updateAdvancedStats();
    input.value="";
    input.focus();
  });
+})();
+</script>
+<script>
+(function(){
+ const dot=document.getElementById("apiDot");
+ const status=document.getElementById("apiStatus");
+ const detail=document.getElementById("apiDetail");
+ const last=document.getElementById("apiLastRound");
+ const time=document.getElementById("apiLastUpdate");
+
+ if(!dot) return;
+
+ function showDisconnected(){
+   dot.textContent="🔴";
+   status.textContent="NOT CONNECTED";
+   detail.textContent="No authorized live data source connected";
+ }
+
+ window.receiveLiveMultiplier=function(multiplier){
+   const value=Number(multiplier);
+   if(!Number.isFinite(value) || value<1.01) return;
+
+   if(typeof data==="undefined") return;
+
+   data.unshift(value);
+   localStorage.setItem("aviatorData",JSON.stringify(data));
+
+   last.textContent=value.toFixed(2)+"×";
+   time.textContent=new Date().toLocaleTimeString();
+
+   dot.textContent="🟢";
+   status.textContent="LIVE FEED CONNECTED";
+   detail.textContent="Round received successfully";
+
+   if(typeof update==="function") update();
+   if(typeof updatePrediction==="function") updatePrediction();
+   if(typeof updateAdvancedStats==="function") updateAdvancedStats();
+ };
+
+ showDisconnected();
+
+ setInterval(function(){
+   if(status.textContent==="NOT CONNECTED"){
+     detail.textContent="Waiting for authorized live data source";
+   }
+ },10000);
 })();
 </script>
 </body>
