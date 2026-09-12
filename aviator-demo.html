@@ -1,124 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aviator Demo</title>
-<style>
-body{margin:0;background:#0f172a;color:white;font-family:sans-serif;display:flex;flex-direction:column;align-items:center}
-#game{width:95%;max-width:600px;background:#1e293b;border-radius:12px;margin-top:20px;overflow:hidden;position:relative}
-canvas{width:100%;height:320px;background:linear-gradient(#1e293b,#0f172a);display:block}
-#multiplier{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;font-weight:bold}
-#controls{padding:15px;display:flex;gap:10px}
-button{flex:1;padding:14px;border:none;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer}
-#betBtn{background:#00ff88;color:#000}
-#cashBtn{background:#ff3b30;color:white;display:none}
-#stats{display:flex;justify-content:space-around;padding:10px;font-size:14px;color:#94a3b8}
-.crashed{color:#ff3b30!important}
-.flying{color:#00ff88}
-</style>
-</head>
-<body>
-<h2>✈️ AVIATOR DEMO - Free Play</h2>
-<div id="game">
-<canvas id="c"></canvas>
-<div id="multiplier" class="flying">1.00x</div>
-</div>
-<div id="stats">
-<span>Balance: KSH <b id="bal">5000</b></span>
-<span id="status">Place Bet</span>
-</div>
-<div id="controls">
-<button id="betBtn">BET KSH 100</button>
-<button id="cashBtn">CASHOUT</button>
-</div>
-<div style="padding:15px;font-size:13px;color:#64748b">
-<p>Last Crashes: <span id="history">-</span></p>
-Demo only - No real money. Crash is random like real Aviator.
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>AVIATOR</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0b0e14;color:#fff;font-family:sans-serif}
+.header{padding:12px;background:#141822;display:flex;justify-content:space-between}
+.graph{height:55vh;background:#0f1419;position:relative;overflow:hidden;border-bottom:1px solid #1f2937}
+#plane{position:absolute;left:5%;bottom:15%;font-size:40px;transition:0.05s}
+#mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;font-weight:900}
+.crash{color:#ff3b30!important}
+.controls{padding:15px;background:#11131a}
+.btn{width:100%;padding:15px;border:none;border-radius:10px;font-weight:900;font-size:16px;margin-top:10px}
+.bet{background:#00ff88;color:#000}.cash{background:#ff3b30;color:#fff}
+input{width:100%;padding:12px;background:#0b0e14;border:1px solid #333;border-radius:8px;color:#fff}
+</style></head><body>
+<div class="header"><a href="index.html" style="color:#888;text-decoration:none">← Lobby</a><b style="color:#00ff88">BAL: <span id="bal">5000</span></b></div>
+<div class="graph"><div id="plane">✈️</div><div id="mult">1.00x</div></div>
+<div class="controls">
+<input id="betAmt" type="number" value="100"><button id="btn" onclick="action()" class="btn bet">BET - Start Round</button>
+<div id="log" style="margin-top:10px;font-size:12px;color:#666;display:flex;gap:5px;overflow-x:auto"></div>
 </div>
 <script>
-const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
-canvas.width=600; canvas.height=320;
-let mult=1, crashed=false, flying=false, crashPoint=2, bet=100, balance=5000, history=[];
-let anim, planeX=0, planeY=250;
-
-function getCrashPoint(){
-  let r=Math.random();
-  if(r<0.05) return 1.00 + Math.random()*0.5;
-  return Math.max(1.05, (0.95 / (1-r))).toFixed(2)*1;
+let bal=5000, playing=false, mult=1, crash=0, bet=0, iv=null;
+function crashGen(){let r=Math.random(); if(r<0.08) return 1+Math.random()*0.3; return Math.max(1,(0.97/(1-r))*0.9)}
+function action(){
+ if(!playing){bet=parseInt(document.getElementById('betAmt').value); if(bet>bal)return alert('No balance'); bal-=bet; document.getElementById('bal').innerText=bal; playing=true; start(); document.getElementById('btn').innerText='CASHOUT '+mult.toFixed(2)+'x'; document.getElementById('btn').className='btn cash'; return;}
+ let win=Math.floor(bet*mult); bal+=win; document.getElementById('bal').innerText=bal; playing=false; clearInterval(iv); alert('WIN '+win+' KSH @ '+mult.toFixed(2)+'x'); reset();
 }
-
-function save(){localStorage.setItem(name+"_bal",bal);localStorage.setItem(name+"_hist",JSON.stringify(hist));}
-function reset(){
-  mult=1; planeX=0; planeY=250; crashed=false; flying=false;
-  document.getElementById('multiplier').className='flying';
-  document.getElementById('multiplier').textContent='1.00x';
-  document.getElementById('status').textContent='Place Bet';
-  document.getElementById('betBtn').style.display='block';
-  document.getElementById('cashBtn').style.display='none';
-  draw();
+function start(){
+ crash=crashGen(); mult=1; let st=Date.now();
+ let pEl=document.getElementById('plane'), mEl=document.getElementById('mult');
+ mEl.className=''; mEl.style.color='white';
+ iv=setInterval(()=>{
+  let e=(Date.now()-st)/1000; mult=1+e*0.4+Math.pow(e,1.8)*0.1;
+  if(mult>=crash){mult=crash; mEl.innerText=mult.toFixed(2)+'x CRASHED'; mEl.className='crash'; clearInterval(iv); playing=false; document.getElementById('btn').innerText='BET - Next Round'; document.getElementById('btn').className='btn bet'; let s=document.createElement('span'); s.innerText=mult.toFixed(2)+'x'; s.style.cssText='padding:3px 8px;border-radius:10px;background:'+(mult<2?'#2a1a1a;color:#ff6b6b':mult<5?'#2a2a1a;color:#ffd93d':'#0a2a1a;color:#00ff88'); document.getElementById('log').prepend(s); setTimeout(()=>{reset()},2000); return;}
+  mEl.innerText=mult.toFixed(2)+'x'; pEl.style.left=(5+Math.min(e/6,1)*75)+'%'; pEl.style.bottom=(15+Math.pow(Math.min(e/6,1),1.2)*60)+'%';
+  document.getElementById('btn').innerText='CASHOUT '+mult.toFixed(2)+'x - WIN '+(bet*mult).toFixed(0);
+ },60);
 }
-function draw(){
-  ctx.clearRect(0,0,600,320);
-  ctx.strokeStyle='#334155'; ctx.beginPath();
-  ctx.moveTo(0,260); ctx.lineTo(600,260); ctx.stroke();
-  // trail
-  if(flying){
-    ctx.strokeStyle='#00ff88'; ctx.lineWidth=3; ctx.beginPath();
-    ctx.moveTo(0,250);
-    let x=planeX, y=planeY;
-    ctx.lineTo(x,y); ctx.stroke();
-  }
-  // plane
-  ctx.font='24px serif'; ctx.fillText('✈️', planeX-10, planeY+5);
-}
-function startRound(){
-  crashPoint=getCrashPoint();
-  flying=true; crashed=false; mult=1;
-  document.getElementById('status').textContent='Flying...';
-  document.getElementById('betBtn').style.display='none';
-  document.getElementById('cashBtn').style.display='block';
-  balance-=bet;
-  document.getElementById('bal').textContent=balance;
-  let start=Date.now();
-  function loop(){
-    if(crashed) return;
-    let elapsed=(Date.now()-start)/1000;
-    mult=Math.pow(1.08, elapsed*2);
-    mult=Math.min(mult, crashPoint);
-    if(mult>=crashPoint){
-      mult=crashPoint; crashed=true; flying=false;
-      document.getElementById('multiplier').textContent=crashPoint.toFixed(2)+'x';
-      document.getElementById('multiplier').className='crashed';
-      document.getElementById('status').textContent='CRASHED @ '+crashPoint.toFixed(2)+'x';
-      document.getElementById('cashBtn').style.display='none';
-      document.getElementById('betBtn').style.display='block';
-      history.unshift(crashPoint.toFixed(2)+'x');
-      if(history.length>8) history.pop();
-      document.getElementById('history').textContent=history.join(' - ');
-      setTimeout(reset,2000);
-      return;
-    }
-    planeX = (mult-1)*80;
-    planeY = 250 - Math.pow(mult,1.2)*12;
-    document.getElementById('multiplier').textContent=mult.toFixed(2)+'x';
-    draw();
-    anim=requestAnimationFrame(loop);
-  }
-  loop();
-}
-document.getElementById('betBtn').onclick=()=>{ if(!flying) startRound(); };
-document.getElementById('cashBtn').onclick=()=>{
-  if(!flying||crashed) return;
-  let win=Math.floor(bet*mult);
-  balance+=win;
-  document.getElementById('bal').textContent=balance;
-  document.getElementById('status').textContent='Cashed @ '+mult.toFixed(2)+'x Won KSH '+win;
-  flying=false;
-  document.getElementById('cashBtn').style.display='none';
-  document.getElementById('betBtn').style.display='block';
-};
-if(hist.length) document.getElementById("hist").textContent=hist.join(" - "); reset();
-setInterval(()=>{ if(!flying && !crashed) draw(); },100);
-</script>
-</body>
-</html>
+function reset(){document.getElementById('mult').innerText='1.00x'; document.getElementById('plane').style.left='5%'; document.getElementById('plane').style.bottom='15%';}
+</script></body></html>

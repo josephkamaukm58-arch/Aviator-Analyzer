@@ -1,12 +1,38 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Crash Rocket Demo</title>
-<style>body{margin:0;background:#020617;color:white;font-family:sans-serif;text-align:center}#game{width:95%;max-width:600px;margin:15px auto;background:#0f172a;border-radius:12px;overflow:hidden;position:relative}canvas{width:100%;height:340px;display:block}#m{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;color:#facc15;text-shadow:0 0 20px #facc15}button{padding:15px 25px;border:none;border-radius:10px;font-weight:bold;font-size:17px;margin:8px;cursor:pointer}.bet{background:#ef4444;color:white}.cash{background:#22c55e;color:white;display:none}</style></head>
-<body><h2>🚀 CRASH ROCKET DEMO</h2><div id="game"><canvas id="c" width="600" height="340"></canvas><div id="m">1.00x</div></div><div>Balance: KSH <b id="bal">5000</b> | <span id="st">Ready</span><br><span id="hist" style="color:#64748b;font-size:12px"></span></div><div><button class="bet" id="b">BET 100</button><button class="cash" id="ca">CASHOUT</button></div>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>CRASH ROCKET</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0b0e14;color:#fff;font-family:sans-serif}
+.header{padding:12px;background:#141822;display:flex;justify-content:space-between}
+.graph{height:55vh;background:#0f1419;position:relative;overflow:hidden;border-bottom:1px solid #1f2937}
+#plane{position:absolute;left:5%;bottom:15%;font-size:40px;transition:0.05s}
+#mult{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;font-weight:900}
+.crash{color:#ff3b30!important}
+.controls{padding:15px;background:#11131a}
+.btn{width:100%;padding:15px;border:none;border-radius:10px;font-weight:900;font-size:16px;margin-top:10px}
+.bet{background:#00ff88;color:#000}.cash{background:#ff3b30;color:#fff}
+input{width:100%;padding:12px;background:#0b0e14;border:1px solid #333;border-radius:8px;color:#fff}
+</style></head><body>
+<div class="header"><a href="index.html" style="color:#888;text-decoration:none">← Lobby</a><b style="color:#00ff88">BAL: <span id="bal">5000</span></b></div>
+<div class="graph"><div id="plane">🚀</div><div id="mult">1.00x</div></div>
+<div class="controls">
+<input id="betAmt" type="number" value="100"><button id="btn" onclick="action()" class="btn bet">BET - Start Round</button>
+<div id="log" style="margin-top:10px;font-size:12px;color:#666;display:flex;gap:5px;overflow-x:auto"></div>
+</div>
 <script>
-const cv=document.getElementById('c'),x=cv.getContext('2d');let mult=1,crash=2,fly=false,cr=false,bal=5000,bet=100,hist=JSON.parse(localStorage.getItem(name+"_hist")||"[]");
-function getCrash(){let r=Math.random();return r<0.08?1.1+Math.random():Math.max(1.1,(0.92/(1-r)))}
-function save(){localStorage.setItem(name+"_bal",bal);localStorage.setItem(name+"_hist",JSON.stringify(hist));}
-function reset(){mult=1;fly=false;cr=false;document.getElementById('m').textContent='1.00x';document.getElementById('m').style.color='#facc15';document.getElementById('st').textContent='Ready';document.getElementById('b').style.display='inline-block';document.getElementById('ca').style.display='none';draw(0)}
-function draw(p){x.clearRect(0,0,600,340);x.fillStyle='#020617';x.fillRect(0,0,600,340);for(let i=0;i<100;i++){x.fillStyle='rgba(255,255,255,'+Math.random()*.5+')';x.fillRect(Math.random()*600,Math.random()*200,2,2)}x.fillStyle='#facc15';let rx=p*3,ry=300-p*1.5;if(fly){x.font='30px serif';x.fillText('🚀',rx,ry);x.strokeStyle='#f97316';x.lineWidth=3;x.beginPath();x.moveTo(rx-20,ry+15);x.lineTo(rx-40,ry+25);x.stroke()}}
-function go(){crash=getCrash();fly=true;cr=false;mult=1;bal-=bet;document.getElementById('bal').textContent=bal;document.getElementById('b').style.display='none';document.getElementById('ca').style.display='inline-block';let s=Date.now();(function loop(){if(cr)return;let e=(Date.now()-s)/1000;mult=Math.pow(1.12,e*1.8);if(mult>=crash){mult=crash;cr=true;fly=false;document.getElementById('m').textContent=crash.toFixed(2)+'x';document.getElementById('m').style.color='#ef4444';document.getElementById('st').textContent='EXPLODED @ '+crash.toFixed(2)+'x';hist.unshift(crash.toFixed(2)+'x');if(hist.length>6)hist.pop();document.getElementById('hist').textContent=hist.join(' - ');document.getElementById('ca').style.display='none';document.getElementById('b').style.display='inline-block';setTimeout(reset,2000);return}document.getElementById('m').textContent=mult.toFixed(2)+'x';draw(mult*12);requestAnimationFrame(loop)})()}
-document.getElementById('b').onclick=()=>{if(!fly)go()};document.getElementById('ca').onclick=()=>{if(!fly||cr)return;let w=Math.floor(bet*mult);bal+=w;document.getElementById('bal').textContent=bal;document.getElementById('st').textContent='Cashed @ '+mult.toFixed(2)+'x +'+w;fly=false;document.getElementById('ca').style.display='none';document.getElementById('b').style.display='inline-block'};if(hist.length) document.getElementById("hist").textContent=hist.join(" - "); reset();
+let bal=5000, playing=false, mult=1, crash=0, bet=0, iv=null;
+function crashGen(){let r=Math.random(); if(r<0.08) return 1+Math.random()*0.3; return Math.max(1,(0.97/(1-r))*0.9)}
+function action(){
+ if(!playing){bet=parseInt(document.getElementById('betAmt').value); if(bet>bal)return alert('No balance'); bal-=bet; document.getElementById('bal').innerText=bal; playing=true; start(); document.getElementById('btn').innerText='CASHOUT '+mult.toFixed(2)+'x'; document.getElementById('btn').className='btn cash'; return;}
+ let win=Math.floor(bet*mult); bal+=win; document.getElementById('bal').innerText=bal; playing=false; clearInterval(iv); alert('WIN '+win+' KSH @ '+mult.toFixed(2)+'x'); reset();
+}
+function start(){
+ crash=crashGen(); mult=1; let st=Date.now();
+ let pEl=document.getElementById('plane'), mEl=document.getElementById('mult');
+ mEl.className=''; mEl.style.color='white';
+ iv=setInterval(()=>{
+  let e=(Date.now()-st)/1000; mult=1+e*0.4+Math.pow(e,1.8)*0.1;
+  if(mult>=crash){mult=crash; mEl.innerText=mult.toFixed(2)+'x CRASHED'; mEl.className='crash'; clearInterval(iv); playing=false; document.getElementById('btn').innerText='BET - Next Round'; document.getElementById('btn').className='btn bet'; let s=document.createElement('span'); s.innerText=mult.toFixed(2)+'x'; s.style.cssText='padding:3px 8px;border-radius:10px;background:'+(mult<2?'#2a1a1a;color:#ff6b6b':mult<5?'#2a2a1a;color:#ffd93d':'#0a2a1a;color:#00ff88'); document.getElementById('log').prepend(s); setTimeout(()=>{reset()},2000); return;}
+  mEl.innerText=mult.toFixed(2)+'x'; pEl.style.left=(5+Math.min(e/6,1)*75)+'%'; pEl.style.bottom=(15+Math.pow(Math.min(e/6,1),1.2)*60)+'%';
+  document.getElementById('btn').innerText='CASHOUT '+mult.toFixed(2)+'x - WIN '+(bet*mult).toFixed(0);
+ },60);
+}
+function reset(){document.getElementById('mult').innerText='1.00x'; document.getElementById('plane').style.left='5%'; document.getElementById('plane').style.bottom='15%';}
 </script></body></html>
