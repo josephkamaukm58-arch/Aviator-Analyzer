@@ -1482,6 +1482,7 @@ async function registerUser(e){
 
    if(!response.ok){
      message.textContent="❌ "+result.message;
+     showToast("❌ "+result.message,"error");
      return;
    }
 
@@ -1492,6 +1493,7 @@ async function registerUser(e){
    }));
 
    message.textContent="✅ "+result.message;
+   showToast("✅ Account created successfully.","success");
    e.target.reset();
 
  }catch(error){
@@ -1522,6 +1524,7 @@ async function loginUser(e){
 
    if(!response.ok){
      message.textContent="❌ "+result.message;
+     showToast("❌ "+result.message,"error");
      return;
    }
 
@@ -1529,7 +1532,9 @@ async function loginUser(e){
    localStorage.setItem("aviatorUser",JSON.stringify(result.user));
 
    message.textContent="✅ Welcome back, "+result.user.name+"!";
+   showToast("👋 Welcome back, "+result.user.name+"!","success");
    e.target.reset();
+   showUserDashboard();
 
  }catch(error){
    message.textContent="❌ Login server is not available.";
