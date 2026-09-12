@@ -320,6 +320,10 @@ and this analyzer cannot guarantee or predict the next multiplier.
 </div>
 </div>
 
+<button onclick="exportAnalysis()" style="margin-top:12px">
+📥 EXPORT ANALYSIS
+</button>
+
 <button onclick="logoutUser()" style="margin-top:12px;background:#555">
 LOG OUT
 </button>
@@ -914,6 +918,31 @@ function updateRecentActivity(){
    row.innerHTML="<span>Round "+(index+1)+"</span><strong>"+Number(value).toFixed(2)+"×</strong>";
    box.appendChild(row);
  });
+}
+
+function exportAnalysis(){
+ if(!data.length){
+   alert("No multiplier history to export yet.");
+   return;
+ }
+
+ let csv="Round,Multiplier\n";
+
+ data.forEach((value,index)=>{
+   csv+=(index+1)+","+Number(value).toFixed(2)+"\\n";
+ });
+
+ const blob=new Blob([csv],{type:"text/csv"});
+ const url=URL.createObjectURL(blob);
+
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="aviator-analysis.csv";
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ URL.revokeObjectURL(url);
 }
 
 function logoutUser(){
