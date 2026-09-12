@@ -932,6 +932,29 @@ body.light-mode input{
   color:white;
 }
 </style>
+
+<style>
+#backToTop{
+  position:fixed;
+  right:18px;
+  bottom:78px;
+  z-index:9996;
+  width:46px;
+  height:46px;
+  border:0;
+  border-radius:50%;
+  background:#ff3b30;
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 5px 20px #0008;
+  display:none;
+}
+#backToTop.show{
+  display:block;
+}
+</style>
 </head>
 
 
@@ -2565,6 +2588,27 @@ window.addEventListener("load",function(){
     const notice=document.getElementById("storageNotice");
     if(notice) notice.classList.add("show");
   }
+});
+</script>
+
+<button id="backToTop" aria-label="Back to top">↑</button>
+
+<script>
+const backToTop=document.getElementById("backToTop");
+
+window.addEventListener("scroll",function(){
+  if(window.scrollY>400){
+    backToTop.classList.add("show");
+  }else{
+    backToTop.classList.remove("show");
+  }
+});
+
+backToTop.addEventListener("click",function(){
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 });
 </script>
 </body>
