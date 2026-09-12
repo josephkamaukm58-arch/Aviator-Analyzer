@@ -183,6 +183,21 @@ body.light-mode input{
   box-shadow:0 5px 20px #0006;
 }
 </style>
+
+<style>
+.connection-bar{
+  margin:12px 0;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  background:#172238;
+  border:1px solid #2b3955;
+}
+.connection-online{color:#55e28b}
+.connection-waiting{color:#ffd166}
+.connection-offline{color:#ff6b6b}
+</style>
 </head>
 <body>
 
@@ -194,6 +209,10 @@ body.light-mode input{
 <a href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer" target="_blank">💬 WhatsApp</a>
 </nav>
 <div class="container">
+<div id="connectionBar" class="connection-bar connection-waiting">
+🟡 CHECKING SERVER CONNECTION...
+</div>
+
 <h1>✈️ AVIATOR ANALYZER</h1>
 
 <div class="card">
@@ -1312,5 +1331,34 @@ window.addEventListener("load",function(){
 <button id="themeButton" class="theme-button" onclick="toggleTheme()">
 ☀️ Light Mode
 </button>
-</body>
+<script>
+function updateConnectionBar(){
+ const bar=document.getElementById("connectionBar");
+ if(!bar) return;
+
+ fetch("/api/status")
+  .then(r=>{
+    if(!r.ok) throw new Error("Server error");
+    return r.json();
+  })
+  .then(result=>{
+    if(result.connected){
+      bar.className="connection-bar connection-online";
+      bar.textContent="🟢 SERVER ONLINE • LIVE DATA SOURCE CONNECTED";
+    }else{
+      bar.className="connection-bar connection-waiting";
+      bar.textContent="🟡 SERVER ONLINE • WAITING FOR AUTHORIZED LIVE SOURCE";
+    }
+  })
+  .catch(()=>{
+    bar.className="connection-bar connection-offline";
+    bar.textContent="🔴 SERVER OFFLINE • CHECK PORT 8000";
+  });
+}
+
+setInterval(updateConnectionBar,15000);
+
+window.addEventListener("load",updateConnectionBar);
+
+</script></body>
 </html>
