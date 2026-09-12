@@ -12,6 +12,30 @@ def get_user_count():
         return 0
 
 class Handler(SimpleHTTPRequestHandler):
+
+        if self.path == "/api/admin-login":
+            length=int(self.headers.get("Content-Length","0"))
+            body=json.loads(self.rfile.read(length) or b"{}")
+            pin=body.get("pin","")
+
+            if pin != os.environ.get("AVIATOR_ADMIN_PIN",""):
+                self.send_response(401)
+                self.send_header("Content-Type","application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "message":"Invalid admin PIN"
+                }).encode())
+                return
+
+            self.send_response(200)
+            self.send_header("Content-Type","application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "authenticated":True
+            }).encode())
+            return
+
+
     def do_POST(self):
         if self.path == "/api/register":
             length = int(self.headers.get("Content-Length", 0))
