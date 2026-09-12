@@ -1147,7 +1147,32 @@ async function showAdminDashboard(){
 
  document.querySelector(".container").appendChild(admin);
 
- fetch("/api/status")
+ 
+const healthBox=document.createElement("div");
+healthBox.id="systemHealth";
+healthBox.style.cssText="margin-top:15px;background:#111a2b;padding:15px;border-radius:12px;border:1px solid #2b3955";
+healthBox.innerHTML=`
+  <h3>🩺 System Health</h3>
+  <div id="backendHealth">Checking backend...</div>
+`;
+document.getElementById("adminDashboard").appendChild(healthBox);
+
+fetch("/api/status")
+ .then(response=>{
+   if(!response.ok) throw new Error("Backend error");
+   return response.json();
+ })
+ .then(result=>{
+   document.getElementById("backendHealth").innerHTML=
+     "🟢 Backend: ONLINE<br>🟡 Live data: "+
+     (result.connected ? "CONNECTED" : "WAITING FOR AUTHORIZED SOURCE");
+ })
+ .catch(()=>{
+   document.getElementById("backendHealth").textContent=
+     "🔴 Backend: OFFLINE";
+ });
+
+fetch("/api/status")
    .then(r=>r.json())
    .then(result=>{
      document.getElementById("adminApi").textContent=
