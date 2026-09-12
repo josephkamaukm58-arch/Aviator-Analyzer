@@ -1238,7 +1238,35 @@ fetch("/api/admin-stats")
 }
 
 
-function closeAdminDashboard(){
+
+function refreshAdminStats(){
+ const usersEl=document.getElementById("adminUsers");
+ const apiEl=document.getElementById("adminApi");
+
+ if(!usersEl) return;
+
+ fetch("/api/admin-stats")
+  .then(r=>r.json())
+  .then(result=>{
+    usersEl.textContent=result.users;
+  })
+  .catch(()=>{
+    usersEl.textContent="—";
+  });
+
+ fetch("/api/status")
+  .then(r=>r.json())
+  .then(result=>{
+    if(apiEl){
+      apiEl.textContent=result.connected ? "🟢 CONNECTED" : "🟡 WAITING";
+    }
+  })
+  .catch(()=>{
+    if(apiEl) apiEl.textContent="🔴 OFFLINE";
+  });
+}
+
+setInterval(refreshAdminStats,30000);\n\nfunction closeAdminDashboard(){
  const panel=document.getElementById("adminDashboard");
 
  if(panel){
