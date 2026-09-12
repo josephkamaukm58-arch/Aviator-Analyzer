@@ -51,6 +51,20 @@ small{color:#aeb8c9}
 </div>
 </div>
 
+<div class="card" id="predictionCard">
+<h2>🎯 Prediction Display</h2>
+<div style="text-align:center;padding:18px;background:#1b263b;border-radius:12px">
+<div style="font-size:14px;color:#aeb8c9">ESTIMATED NEXT-ROUND RANGE</div>
+<div id="predictionRange" style="font-size:34px;font-weight:bold;margin:8px">--</div>
+<div id="confidence" style="font-size:18px">Confidence: --</div>
+<div id="risk" style="font-size:18px;margin-top:8px">Risk: --</div>
+<div id="recommendation" style="font-size:18px;margin-top:8px">Add more rounds</div>
+</div>
+<small style="display:block;margin-top:12px;color:#aeb8c9">
+⚠️ This is a statistical estimate from historical rounds, not a guaranteed prediction. Random game outcomes cannot be reliably predicted.
+</small>
+</div>
+
 <div class="card">
 <h2>📊 Analysis Signal</h2>
 <div class="signal" id="signal">Add rounds to begin analysis.</div>
@@ -147,5 +161,62 @@ function analyze(){
 update();
 </script>
 
+
+
+<script>
+function updatePrediction(){
+ const range=document.getElementById("predictionRange");
+ const confidence=document.getElementById("confidence");
+ const risk=document.getElementById("risk");
+ const recommendation=document.getElementById("recommendation");
+
+ if(data.length<10){
+   range.textContent="--";
+   confidence.textContent="Confidence: Need 10+ rounds";
+   risk.textContent="Risk: Unknown";
+   recommendation.textContent="Add more rounds";
+   return;
+ }
+
+ const recent=data.slice(0,20);
+ const avg=recent.reduce((a,b)=>a+b,0)/recent.length;
+ const low=recent.filter(x=>x<2).length;
+ const high=recent.filter(x=>x>=5).length;
+
+ let lowEstimate=Math.max(1.01,Math.min(2.5,avg*0.55));
+ let highEstimate=Math.max(lowEstimate+0.25,Math.min(8,avg*1.25));
+
+ let conf="Low";
+ let riskLevel="High";
+ let rec="👀 OBSERVE";
+
+ if(recent.length>=20 && high>=3 && low<12){
+   conf="Medium";
+   riskLevel="High";
+   rec="⚠️ CAUTION";
+ }else if(low>=14){
+   conf="Low";
+   riskLevel="Very High";
+   rec="🛑 WAIT";
+ }else if(avg>=2.5){
+   conf="Medium";
+   riskLevel="High";
+   rec="⚠️ CAUTION";
+ }
+
+ range.textContent=lowEstimate.toFixed(2)+"× – "+highEstimate.toFixed(2)+"×";
+ confidence.textContent="Confidence: "+conf;
+ risk.textContent="Risk: "+riskLevel;
+ recommendation.textContent="Signal: "+rec;
+}
+
+const originalUpdatePrediction=updatePrediction;
+const originalUpdateFunction=update;
+update=function(){
+ originalUpdateFunction();
+ updatePrediction();
+};
+updatePrediction();
+</script>
 </body>
 </html>
