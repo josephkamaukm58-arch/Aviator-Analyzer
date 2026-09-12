@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviator Demo</title>
+<style>
+body{margin:0;background:#0f172a;color:white;font-family:sans-serif;display:flex;flex-direction:column;align-items:center}
+#game{width:95%;max-width:600px;background:#1e293b;border-radius:12px;margin-top:20px;overflow:hidden;position:relative}
+canvas{width:100%;height:320px;background:linear-gradient(#1e293b,#0f172a);display:block}
+#multiplier{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;font-weight:bold}
+#controls{padding:15px;display:flex;gap:10px}
+button{flex:1;padding:14px;border:none;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer}
+#betBtn{background:#00ff88;color:#000}
+#cashBtn{background:#ff3b30;color:white;display:none}
+#stats{display:flex;justify-content:space-around;padding:10px;font-size:14px;color:#94a3b8}
+.crashed{color:#ff3b30!important}
+.flying{color:#00ff88}
+</style>
+</head>
+<body>
+<h2>✈️ AVIATOR DEMO - Free Play</h2>
+<div id="game">
+<canvas id="c"></canvas>
+<div id="multiplier" class="flying">1.00x</div>
+</div>
+<div id="stats">
+<span>Balance: KSH <b id="bal">5000</b></span>
+<span id="status">Place Bet</span>
+</div>
+<div id="controls">
+<button id="betBtn">BET KSH 100</button>
+<button id="cashBtn">CASHOUT</button>
+</div>
+<div style="padding:15px;font-size:13px;color:#64748b">
+<p>Last Crashes: <span id="history">-</span></p>
+Demo only - No real money. Crash is random like real Aviator.
+</div>
+<script>
+const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+canvas.width=600; canvas.height=320;
+let mult=1, crashed=false, flying=false, crashPoint=2, bet=100, balance=5000, history=[];
+let anim, planeX=0, planeY=250;
+
+function getCrashPoint(){
+  let r=Math.random();
+  if(r<0.05) return 1.00 + Math.random()*0.5;
+  return Math.max(1.05, (0.95 / (1-r))).toFixed(2)*1;
+}
+function reset(){
+  mult=1; planeX=0; planeY=250; crashed=false; flying=false;
+  document.getElementById('multiplier').className='flying';
+  document.getElementById('multiplier').textContent='1.00x';
+  document.getElementById('status').textContent='Place Bet';
+  document.getElementById('betBtn').style.display='block';
+  document.getElementById('cashBtn').style.display='none';
+  draw();
+}
+function draw(){
+  ctx.clearRect(0,0,600,320);
+  ctx.strokeStyle='#334155'; ctx.beginPath();
+  ctx.moveTo(0,260); ctx.lineTo(600,260); ctx.stroke();
+  // trail
+  if(flying){
+    ctx.strokeStyle='#00ff88'; ctx.lineWidth=3; ctx.beginPath();
+    ctx.moveTo(0,250);
+    let x=planeX, y=planeY;
+    ctx.lineTo(x,y); ctx.stroke();
+  }
+  // plane
+  ctx.font='24px serif'; ctx.fillText('✈️', planeX-10, planeY+5);
+}
+function startRound(){
+  crashPoint=getCrashPoint();
+  flying=true; crashed=false; mult=1;
+  document.getElementById('status').textContent='Flying...';
+  document.getElementById('betBtn').style.display='none';
+  document.getElementById('cashBtn').style.display='block';
+  balance-=bet;
+  document.getElementById('bal').textContent=balance;
+  let start=Date.now();
+  function loop(){
+    if(crashed) return;
+    let elapsed=(Date.now()-start)/1000;
+    mult=Math.pow(1.08, elapsed*2);
+    mult=Math.min(mult, crashPoint);
+    if(mult>=crashPoint){
+      mult=crashPoint; crashed=true; flying=false;
+      document.getElementById('multiplier').textContent=crashPoint.toFixed(2)+'x';
+      document.getElementById('multiplier').className='crashed';
+      document.getElementById('status').textContent='CRASHED @ '+crashPoint.toFixed(2)+'x';
+      document.getElementById('cashBtn').style.display='none';
+      document.getElementById('betBtn').style.display='block';
+      history.unshift(crashPoint.toFixed(2)+'x');
+      if(history.length>8) history.pop();
+      document.getElementById('history').textContent=history.join(' - ');
+      setTimeout(reset,2000);
+      return;
+    }
+    planeX = (mult-1)*80;
+    planeY = 250 - Math.pow(mult,1.2)*12;
+    document.getElementById('multiplier').textContent=mult.toFixed(2)+'x';
+    draw();
+    anim=requestAnimationFrame(loop);
+  }
+  loop();
+}
+document.getElementById('betBtn').onclick=()=>{ if(!flying) startRound(); };
+document.getElementById('cashBtn').onclick=()=>{
+  if(!flying||crashed) return;
+  let win=Math.floor(bet*mult);
+  balance+=win;
+  document.getElementById('bal').textContent=balance;
+  document.getElementById('status').textContent='Cashed @ '+mult.toFixed(2)+'x Won KSH '+win;
+  flying=false;
+  document.getElementById('cashBtn').style.display='none';
+  document.getElementById('betBtn').style.display='block';
+};
+reset();
+setInterval(()=>{ if(!flying && !crashed) draw(); },100);
+</script>
+</body>
+</html>
