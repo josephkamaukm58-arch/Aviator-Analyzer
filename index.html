@@ -550,7 +550,75 @@ body.light-mode input{
   }
 }
 </style>
+
+<style>
+#appLoader{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#090d18;
+  transition:opacity .4s ease, visibility .4s ease;
+}
+#appLoader.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+.loader-box{
+  text-align:center;
+  padding:30px;
+}
+.loader-plane{
+  font-size:55px;
+  animation:planeFloat 1.2s infinite ease-in-out;
+}
+.loader-title{
+  margin-top:12px;
+  font-size:24px;
+  font-weight:bold;
+}
+.loader-text{
+  margin-top:8px;
+  color:#8f9bb0;
+}
+.loader-bar{
+  width:190px;
+  height:5px;
+  background:#202b40;
+  border-radius:10px;
+  overflow:hidden;
+  margin:18px auto 0;
+}
+.loader-progress{
+  width:45%;
+  height:100%;
+  background:#ff3b30;
+  border-radius:10px;
+  animation:loaderMove 1.2s infinite ease-in-out;
+}
+@keyframes planeFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+@keyframes loaderMove{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(430%)}
+}
+</style>
 </head>
+
+<div id="appLoader">
+  <div class="loader-box">
+    <div class="loader-plane">✈️</div>
+    <div class="loader-title">Aviator Analyzer</div>
+    <div class="loader-text">Loading dashboard...</div>
+    <div class="loader-bar">
+      <div class="loader-progress"></div>
+    </div>
+  </div>
+</div>
 <body>
 
 
@@ -1937,5 +2005,14 @@ if ("serviceWorker" in navigator) {
   <a href="#userDashboard"><span>👤</span>Account</a>
   <a href="#support"><span>💬</span>Support</a>
 </nav>
+
+<script>
+window.addEventListener("load",function(){
+  setTimeout(function(){
+    const loader=document.getElementById("appLoader");
+    if(loader) loader.classList.add("hidden");
+  },700);
+});
+</script>
 </body>
 </html>
