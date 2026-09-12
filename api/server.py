@@ -21,6 +21,12 @@ class Handler(BaseHTTPRequestHandler):
                 "status": "configured" if API_KEY else "waiting",
                 "message": "Authorized data feed not connected yet."
             })
+        elif self.path == "/api/test-round":
+            self.send_json(200, {
+                "test": True,
+                "multiplier": 1.75,
+                "message": "TEST DATA ONLY - not a real game round"
+            })
         else:
             self.send_json(404, {"error": "Not found"})
 
