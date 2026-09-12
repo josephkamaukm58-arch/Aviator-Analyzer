@@ -101,6 +101,47 @@ font-size:12px;
 font-weight:bold;
 }
 </style>
+
+<style>
+#userDashboard{
+  overflow:hidden;
+}
+#userDashboard > div[id^="user"]{
+  transition:transform .2s, box-shadow .2s;
+}
+#userDashboard > div[id^="user"]:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px #0006;
+}
+.dashboard-stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.dashboard-stat{
+  background:#1b263b;
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid #2b3955;
+}
+.dashboard-stat small{
+  display:block;
+  color:#aeb8c9;
+  font-size:11px;
+}
+.dashboard-stat strong{
+  display:block;
+  font-size:24px;
+  margin-top:6px;
+}
+@media(max-width:480px){
+  .dashboard-stats{
+    grid-template-columns:1fr 1fr;
+  }
+}
+</style>
 </head>
 <body>
 
