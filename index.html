@@ -968,6 +968,30 @@ body.light-mode input{
   text-align:center;
 }
 </style>
+
+<style>
+.password-wrap{
+  position:relative;
+}
+.password-wrap input{
+  width:100%;
+  box-sizing:border-box;
+  padding-right:70px !important;
+}
+.password-toggle{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:#26324a;
+  color:white;
+  border-radius:7px;
+  padding:7px 9px;
+  cursor:pointer;
+  font-size:12px;
+}
+</style>
 </head>
 
 
@@ -1437,7 +1461,10 @@ LOG OUT
 <h2>🔐 Login</h2>
 <form onsubmit="loginUser(event)">
 <input id="loginEmail" type="email" placeholder="Email Address" required>
+<div class="password-wrap">
 <input id="loginPassword" type="password" placeholder="Password" required>
+<button type="button" class="password-toggle" onclick="togglePassword('loginPassword',this)">SHOW</button>
+</div>
 <button type="submit">LOGIN</button>
 </form>
 <div id="loginMessage" style="margin-top:12px;text-align:center"></div>
@@ -1454,7 +1481,10 @@ LOG OUT
 <input id="regName" type="text" placeholder="Full Name" required>
 <input id="regPhone" type="tel" placeholder="Phone Number" required>
 <input id="regEmail" type="email" placeholder="Email Address" required>
+<div class="password-wrap">
 <input id="regPassword" type="password" placeholder="Create Password" required>
+<button type="button" class="password-toggle" onclick="togglePassword('regPassword',this)">SHOW</button>
+</div>
 <button type="submit">CREATE ACCOUNT</button>
 </form>
 <div id="registerMessage" style="margin-top:12px;text-align:center"></div>
@@ -2650,6 +2680,21 @@ function updateAccountSessionStatus(){
 
 window.addEventListener("load",updateAccountSessionStatus);
 setInterval(updateAccountSessionStatus,5000);
+</script>
+
+<script>
+function togglePassword(inputId,button){
+  const input=document.getElementById(inputId);
+  if(!input) return;
+
+  if(input.type==="password"){
+    input.type="text";
+    button.textContent="HIDE";
+  }else{
+    input.type="password";
+    button.textContent="SHOW";
+  }
+}
 </script>
 </body>
 </html>
