@@ -822,6 +822,26 @@ body.light-mode input{
   }
 }
 </style>
+
+<style>
+.install-app-button{
+  display:none;
+  width:100%;
+  margin:12px 0;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#ff3b30;
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 5px 18px #0006;
+}
+.install-app-button.show{
+  display:block;
+}
+</style>
 </head>
 
 
@@ -1069,6 +1089,10 @@ body.light-mode input{
     </div>
   </div>
 </section>
+
+<button id="installAppButton" class="install-app-button">
+  📲 INSTALL AVIATOR ANALYZER
+</button>
 <section class="hero-section">
   <div class="hero-content">
     <div class="hero-badge">✈️ AVIATOR ANALYZER</div>
@@ -2372,6 +2396,40 @@ function updateCurrentTime(){
 
 updateCurrentTime();
 setInterval(updateCurrentTime,1000);
+</script>
+
+<script>
+let deferredInstallPrompt=null;
+
+window.addEventListener("beforeinstallprompt",function(event){
+  event.preventDefault();
+  deferredInstallPrompt=event;
+
+  const button=document.getElementById("installAppButton");
+  if(button) button.classList.add("show");
+});
+
+document.addEventListener("click",async function(event){
+  if(event.target.id!=="installAppButton") return;
+
+  if(!deferredInstallPrompt){
+    showToast("📱 Use your browser menu and choose Add to Home screen.","warning");
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+
+  const result=await deferredInstallPrompt.userChoice;
+
+  if(result.outcome==="accepted"){
+    showToast("✅ Aviator Analyzer installation started.","success");
+  }else{
+    showToast("Installation cancelled.","warning");
+  }
+
+  deferredInstallPrompt=null;
+  event.target.classList.remove("show");
+});
 </script>
 </body>
 </html>
