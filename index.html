@@ -167,6 +167,30 @@ and this analyzer cannot guarantee or predict the next multiplier.
 </div>
 </div>
 
+
+<!-- REGISTRATION + WHATSAPP -->
+<div class="card" id="register">
+<h2>👤 Create Your Account</h2>
+<form onsubmit="registerUser(event)">
+<input id="regName" type="text" placeholder="Full Name" required>
+<input id="regPhone" type="tel" placeholder="Phone Number" required>
+<input id="regEmail" type="email" placeholder="Email Address" required>
+<input id="regPassword" type="password" placeholder="Create Password" required>
+<button type="submit">CREATE ACCOUNT</button>
+</form>
+<div id="registerMessage" style="margin-top:12px;text-align:center"></div>
+</div>
+
+<div class="card" style="text-align:center">
+<h2>💬 Need Help?</h2>
+<p>Contact us directly on WhatsApp.</p>
+<a href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer"
+target="_blank"
+style="display:block;background:#20c968;color:white;text-decoration:none;padding:15px;border-radius:10px;font-weight:bold">
+📱 CHAT ON WHATSAPP — 0100418787
+</a>
+</div>
+
 <script>
 let data=JSON.parse(localStorage.getItem("aviatorRounds")||"[]");
 
@@ -556,5 +580,28 @@ updateAdvancedStats();
  setInterval(checkBackend,15000);
 })();
 </script>
+
+<script>
+function registerUser(e){
+ e.preventDefault();
+
+ const name=document.getElementById("regName").value.trim();
+ const phone=document.getElementById("regPhone").value.trim();
+ const email=document.getElementById("regEmail").value.trim();
+ const password=document.getElementById("regPassword").value;
+
+ localStorage.setItem("aviatorUser",JSON.stringify({
+   name:name,
+   phone:phone,
+   email:email
+ }));
+
+ document.getElementById("registerMessage").innerHTML=
+   "✅ Account created successfully, "+name+"!";
+
+ e.target.reset();
+}
+</script>
+
 </body>
 </html>
