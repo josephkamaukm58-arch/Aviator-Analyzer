@@ -168,6 +168,45 @@ and this analyzer cannot guarantee or predict the next multiplier.
 </div>
 
 
+
+
+<!-- USER DASHBOARD -->
+<div class="card" id="userDashboard" style="display:none">
+<h2>👤 My Dashboard</h2>
+
+<div style="background:#1b263b;padding:15px;border-radius:12px">
+<div id="userWelcome" style="font-size:22px;font-weight:bold">Welcome</div>
+<div id="userDetails" style="color:#aeb8c9;margin-top:8px"></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+<div style="background:#1b263b;padding:14px;border-radius:10px;text-align:center">
+<small>ROUNDS ANALYZED</small>
+<div id="userRounds" style="font-size:24px;font-weight:bold">0</div>
+</div>
+
+<div style="background:#1b263b;padding:14px;border-radius:10px;text-align:center">
+<small>ACCOUNT</small>
+<div style="font-size:18px;font-weight:bold">ACTIVE</div>
+</div>
+</div>
+
+<button onclick="logoutUser()" style="margin-top:12px;background:#555">
+LOG OUT
+</button>
+</div>
+
+<!-- LOGIN -->
+<div class="card" id="login">
+<h2>🔐 Login</h2>
+<form onsubmit="loginUser(event)">
+<input id="loginEmail" type="email" placeholder="Email Address" required>
+<input id="loginPassword" type="password" placeholder="Password" required>
+<button type="submit">LOGIN</button>
+</form>
+<div id="loginMessage" style="margin-top:12px;text-align:center"></div>
+</div>
+
 <!-- REGISTRATION + WHATSAPP -->
 <div class="card" id="register">
 <h2>👤 Create Your Account</h2>
@@ -620,6 +659,66 @@ async function registerUser(e){
    message.textContent="❌ Registration server is not available.";
  }
 }
+</script>
+
+
+<script>
+async function loginUser(e){
+ e.preventDefault();
+
+ const email=document.getElementById("loginEmail").value.trim();
+ const password=document.getElementById("loginPassword").value;
+ const message=document.getElementById("loginMessage");
+
+ message.textContent="Checking account...";
+
+ try{
+   const response=await fetch("/api/login",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({email,password})
+   });
+
+   const result=await response.json();
+
+   if(!response.ok){
+     message.textContent="❌ "+result.message;
+     return;
+   }
+
+   localStorage.setItem("aviatorLoggedIn","true");
+   localStorage.setItem("aviatorUser",JSON.stringify(result.user));
+
+   message.textContent="✅ Welcome back, "+result.user.name+"!";
+   e.target.reset();
+
+ }catch(error){
+   message.textContent="❌ Login server is not available.";
+ }
+}
+</script>
+
+
+<script>
+function showUserDashboard(){
+ const user=JSON.parse(localStorage.getItem("aviatorUser")||"null");
+ const loggedIn=localStorage.getItem("aviatorLoggedIn")==="true";
+
+ if(!user || !loggedIn) return;
+
+ document.getElementById("userDashboard").style.display="block";
+ document.getElementById("userWelcome").textContent="Welcome, "+user.name+" 👋";
+ document.getElementById("userDetails").textContent=user.email+" • "+user.phone;
+ document.getElementById("userRounds").textContent=data.length;
+}
+
+function logoutUser(){
+ localStorage.removeItem("aviatorLoggedIn");
+ document.getElementById("userDashboard").style.display="none";
+ alert("You have been logged out.");
+}
+
+window.addEventListener("load",showUserDashboard);
 </script>
 
 </body>
