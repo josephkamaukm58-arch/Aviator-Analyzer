@@ -373,6 +373,10 @@ and this analyzer cannot guarantee or predict the next multiplier.
 📥 EXPORT ANALYSIS
 </button>
 
+
+<button onclick="closeAdminDashboard()" style="margin-top:12px;background:#555">
+🔒 CLOSE ADMIN PANEL
+</button>
 <button onclick="logoutUser()" style="margin-top:12px;background:#555">
 LOG OUT
 </button>
@@ -1206,6 +1210,17 @@ fetch("/api/admin-stats")
  }catch(error){
    alert("❌ Admin server is not available.");
  }
+}
+
+
+function closeAdminDashboard(){
+ const panel=document.getElementById("adminDashboard");
+
+ if(panel){
+   panel.remove();
+ }
+
+ alert("🔒 Admin panel closed.");
 }
 
 function logoutUser(){
