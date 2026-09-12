@@ -1153,7 +1153,44 @@ async function showAdminDashboard(){
      document.getElementById("adminApi").textContent="🔴 OFFLINE";
    });
 
- fetch("/api/admin-stats")
+ 
+fetch("/api/admin-users")
+ .then(r=>r.json())
+ .then(result=>{
+   const users=result.users || [];
+
+   let box=document.getElementById("adminUserList");
+
+   if(!box){
+     box=document.createElement("div");
+     box.id="adminUserList";
+     box.style.cssText="margin-top:15px;background:#111a2b;padding:15px;border-radius:12px;border:1px solid #2b3955";
+     document.getElementById("adminDashboard").appendChild(box);
+   }
+
+   box.innerHTML="<h3>👥 Registered Users</h3>";
+
+   if(!users.length){
+     box.innerHTML+="<div style='color:#aeb8c9'>No registered users yet.</div>";
+     return;
+   }
+
+   users.forEach((user,index)=>{
+     const row=document.createElement("div");
+     row.style.cssText="padding:10px 0;border-bottom:1px solid #26324a";
+
+     row.innerHTML=
+       "<strong>"+(index+1)+". "+user.name+"</strong>"+
+       "<br><small>"+user.email+" • "+user.phone+"</small>";
+
+     box.appendChild(row);
+   });
+ })
+ .catch(()=>{
+   console.log("Could not load admin users");
+ });
+
+fetch("/api/admin-stats")
    .then(r=>r.json())
    .then(result=>{
      document.getElementById("adminUsers").textContent=result.users;
