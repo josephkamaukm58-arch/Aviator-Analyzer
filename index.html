@@ -256,6 +256,45 @@ body.light-mode input{
   color:#8f9bb0;
 }
 </style>
+
+<style>
+.features-section{
+  margin:20px 0;
+  padding:20px 0;
+}
+.features-section h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.feature-card{
+  background:#111a2b;
+  border:1px solid #2b3955;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+}
+.feature-icon{
+  font-size:30px;
+}
+.feature-card h3{
+  margin:10px 0 6px;
+}
+.feature-card p{
+  color:#aeb8c9;
+  font-size:14px;
+  line-height:1.5;
+}
+@media(max-width:480px){
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -267,6 +306,36 @@ body.light-mode input{
 <a href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer" target="_blank">💬 WhatsApp</a>
 </nav>
 <div class="container">
+
+<section class="features-section">
+  <h2>⚡ What Aviator Analyzer Offers</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Statistics</h3>
+      <p>Track averages, highest and lowest multipliers, and round history.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <h3>Charts</h3>
+      <p>Visualize recent multiplier history with an easy-to-read chart.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">⚠️</div>
+      <h3>Risk Analysis</h3>
+      <p>Review historical patterns and statistical risk indicators.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <h3>Backup</h3>
+      <p>Export and restore your historical analysis data.</p>
+    </div>
+  </div>
+</section>
 <section class="hero-section">
   <div class="hero-content">
     <div class="hero-badge">✈️ AVIATOR ANALYZER</div>
