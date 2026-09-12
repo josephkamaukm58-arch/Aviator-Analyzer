@@ -992,6 +992,17 @@ body.light-mode input{
   font-size:12px;
 }
 </style>
+
+<style>
+.password-strength{
+  margin-top:6px;
+  font-size:12px;
+  font-weight:bold;
+}
+.strength-weak{color:#ff3b30;}
+.strength-medium{color:#ffd166;}
+.strength-strong{color:#20c968;}
+</style>
 </head>
 
 
@@ -1485,6 +1496,7 @@ LOG OUT
 <input id="regPassword" type="password" placeholder="Create Password" required>
 <button type="button" class="password-toggle" onclick="togglePassword('regPassword',this)">SHOW</button>
 </div>
+<div id="passwordStrength" class="password-strength"></div>
 <button type="submit">CREATE ACCOUNT</button>
 </form>
 <div id="registerMessage" style="margin-top:12px;text-align:center"></div>
@@ -2695,6 +2707,47 @@ function togglePassword(inputId,button){
     button.textContent="SHOW";
   }
 }
+</script>
+
+<script>
+function checkPasswordStrength(){
+  const input=document.getElementById("regPassword");
+  const output=document.getElementById("passwordStrength");
+
+  if(!input || !output) return;
+
+  const password=input.value;
+
+  if(!password){
+    output.textContent="";
+    return;
+  }
+
+  let score=0;
+
+  if(password.length>=6) score++;
+  if(password.length>=10) score++;
+  if(/[A-Z]/.test(password)) score++;
+  if(/[0-9]/.test(password)) score++;
+  if(/[^A-Za-z0-9]/.test(password)) score++;
+
+  if(score<=2){
+    output.textContent="🔴 Weak password";
+    output.className="password-strength strength-weak";
+  }else if(score<=3){
+    output.textContent="🟡 Medium password";
+    output.className="password-strength strength-medium";
+  }else{
+    output.textContent="🟢 Strong password";
+    output.className="password-strength strength-strong";
+  }
+}
+
+document.addEventListener("input",function(event){
+  if(event.target && event.target.id==="regPassword"){
+    checkPasswordStrength();
+  }
+});
 </script>
 </body>
 </html>
