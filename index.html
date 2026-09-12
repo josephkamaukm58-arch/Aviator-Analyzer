@@ -295,6 +295,62 @@ body.light-mode input{
   }
 }
 </style>
+
+<style>
+.how-section{
+  margin:25px 0;
+  padding:20px 0;
+}
+.how-section h2{
+  text-align:center;
+  margin-bottom:18px;
+}
+.how-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.how-step{
+  background:#111a2b;
+  border:1px solid #2b3955;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+}
+.how-step span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#ff3b30;
+  font-weight:bold;
+}
+.how-step h3{
+  margin:10px 0 6px;
+}
+.how-step p{
+  color:#aeb8c9;
+  font-size:14px;
+  line-height:1.5;
+}
+.how-warning{
+  margin-top:15px;
+  padding:13px;
+  border-radius:10px;
+  background:#2b2415;
+  border:1px solid #5b4b22;
+  color:#ffd166;
+  text-align:center;
+  font-size:13px;
+}
+@media(max-width:600px){
+  .how-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -307,6 +363,34 @@ body.light-mode input{
 </nav>
 <div class="container">
 
+
+<section class="how-section">
+  <h2>🚀 How It Works</h2>
+
+  <div class="how-grid">
+    <div class="how-step">
+      <span>1</span>
+      <h3>Enter Rounds</h3>
+      <p>Add multiplier results as you analyze your history.</p>
+    </div>
+
+    <div class="how-step">
+      <span>2</span>
+      <h3>Analyze</h3>
+      <p>View statistics, charts, trends and risk indicators.</p>
+    </div>
+
+    <div class="how-step">
+      <span>3</span>
+      <h3>Review</h3>
+      <p>Use the historical data to understand previous rounds.</p>
+    </div>
+  </div>
+
+  <div class="how-warning">
+    ⚠️ Aviator outcomes are random. Historical statistics cannot guarantee the next result.
+  </div>
+</section>
 <section class="features-section">
   <h2>⚡ What Aviator Analyzer Offers</h2>
 
