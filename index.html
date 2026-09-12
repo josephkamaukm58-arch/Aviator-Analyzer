@@ -607,6 +607,42 @@ body.light-mode input{
   100%{transform:translateX(430%)}
 }
 </style>
+
+<style>
+#appToast{
+  position:fixed;
+  top:70px;
+  left:50%;
+  transform:translateX(-50%) translateY(-20px);
+  z-index:100001;
+  min-width:260px;
+  max-width:90%;
+  padding:13px 16px;
+  border-radius:12px;
+  background:#172238;
+  color:white;
+  border:1px solid #2b3955;
+  box-shadow:0 8px 25px #0008;
+  text-align:center;
+  font-weight:bold;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s ease;
+}
+#appToast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+#appToast.success{
+  border-color:#20c968;
+}
+#appToast.warning{
+  border-color:#ffd166;
+}
+#appToast.error{
+  border-color:#ff3b30;
+}
+</style>
 </head>
 
 <div id="appLoader">
@@ -619,7 +655,7 @@ body.light-mode input{
     </div>
   </div>
 </div>
-<body>
+<div id="appToast"></div><body>
 
 
 <nav class="top-nav">
@@ -2013,6 +2049,23 @@ window.addEventListener("load",function(){
     if(loader) loader.classList.add("hidden");
   },700);
 });
+</script>
+
+<script>
+function showToast(message,type="success"){
+  const toast=document.getElementById("appToast");
+  if(!toast) return;
+
+  toast.textContent=message;
+  toast.className="";
+  toast.id="appToast";
+  toast.classList.add("show",type);
+
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>{
+    toast.classList.remove("show");
+  },3000);
+}
 </script>
 </body>
 </html>
