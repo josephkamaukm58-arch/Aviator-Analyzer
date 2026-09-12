@@ -204,6 +204,58 @@ body.light-mode input{
 .mult-medium{color:#ffd166}
 .mult-high{color:#55e28b}
 </style>
+
+<style>
+.hero-section{
+  margin:15px 0 20px;
+  padding:35px 20px;
+  border-radius:18px;
+  text-align:center;
+  background:linear-gradient(135deg,#111a2b,#1b263b);
+  border:1px solid #2b3955;
+  box-shadow:0 10px 35px #0006;
+}
+.hero-badge{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:20px;
+  background:#ff3b30;
+  font-size:12px;
+  font-weight:bold;
+}
+.hero-section h1{
+  font-size:34px;
+  margin:15px 0 10px;
+}
+.hero-section p{
+  color:#aeb8c9;
+  line-height:1.6;
+  max-width:600px;
+  margin:0 auto 20px;
+}
+.hero-actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+.hero-actions a{
+  text-decoration:none;
+  color:white;
+  background:#ff3b30;
+  padding:12px 18px;
+  border-radius:10px;
+  font-weight:bold;
+}
+.hero-actions a:nth-child(2){
+  background:#172238;
+  border:1px solid #2b3955;
+}
+.hero-section small{
+  color:#8f9bb0;
+}
+</style>
 </head>
 <body>
 
@@ -215,6 +267,26 @@ body.light-mode input{
 <a href="https://wa.me/254100418787?text=Hello%20Aviator%20Analyzer" target="_blank">💬 WhatsApp</a>
 </nav>
 <div class="container">
+<section class="hero-section">
+  <div class="hero-content">
+    <div class="hero-badge">✈️ AVIATOR ANALYZER</div>
+    <h1>Analyze. Track. Understand.</h1>
+    <p>
+      Track multiplier history, view statistics, monitor trends,
+      and manage your analysis from one mobile-friendly dashboard.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#predictionCard">📊 Start Analyzing</a>
+      <a href="#register">👤 Create Account</a>
+    </div>
+
+    <small>
+      Historical analysis only — no guaranteed prediction of random game outcomes.
+    </small>
+  </div>
+</section>
+
 <div id="connectionBar" class="connection-bar connection-waiting">
 🟡 CHECKING SERVER CONNECTION...
 </div>
