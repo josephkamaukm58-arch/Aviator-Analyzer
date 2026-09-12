@@ -44,7 +44,7 @@ header{background:#141822;padding:12px 15px;display:flex;justify-content:space-b
 <body>
 <header>
 <div class="logo">AVIATOR<span> ANALYZER</span></div>
-<div class="bal">DEMO • KSH <b>5000</b></div>
+<button onclick="openDep()" style="background:#00ff88;color:#000;border:none;padding:6px 12px;border-radius:20px;font-weight:900;font-size:12px;margin-right:8px">DEPOSIT</button><div class="bal">DEMO • KSH <b>5000</b></div>
 </header>
 <div class="live-bar">
 <span style="background:#11131a;color:#6b7280">LAST CRASHES:</span>
@@ -68,6 +68,15 @@ header{background:#141822;padding:12px 15px;display:flex;justify-content:space-b
 <div class="card-info"><h3>JetX</h3><p>Jet flies higher • Win before crash • Auto bet</p><button class="play-btn jetx-btn">PLAY NOW</button></div>
 </div>
 </div>
+
+<div class="leader">
+<h3>🏆 TOP WINNERS TODAY (DEMO)</h3>
+<div class="row"><span>1. @Kamau254</span><span><b>KSH 12,430 @ 8.2x</b> ✈️</span></div>
+<div class="row"><span>2. @Akinyi_O</span><span><b>KSH 9,120 @ 5.4x</b> 🚀</span></div>
+<div class="row"><span>3. @MosesBet</span><span><b>KSH 7,800 @ 12.4x</b> 🛩️</span></div>
+<div class="row"><span>4. @Njeri</span><span><b>KSH 5,230 @ 3.2x</b> ✈️</span></div>
+<div class="row"><span>5. @You</span><span><b>KSH 5,000</b> 🔥</span></div>
+</div>
 <div class="stats">
 <div class="stat"><b>3</b><span>GAMES</span></div>
 <div class="stat"><b>1,247</b><span>PLAYERS</span></div>
@@ -84,6 +93,30 @@ els.forEach(el=>{
  el.textContent=m+'x → '+(parseFloat(m)+1.2).toFixed(2)+'x → '+(parseFloat(m)*2).toFixed(2)+'x';
 });
 },3000);
+</script>
+
+<style>
+#depositModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px}
+.dep-box{background:#141822;border:1px solid #252a3a;border-radius:16px;padding:20px;width:100%;max-width:340px}
+.dep-box h2{margin-bottom:10px}
+.dep-box input{width:100%;padding:12px;background:#0b0e14;border:1px solid #252a3a;border-radius:8px;color:white;margin:8px 0}
+.leader{background:#11131a;border:1px solid #1f2937;border-radius:12px;margin:0 15px 20px;padding:12px}
+.leader h3{font-size:13px;margin-bottom:10px;color:#6b7280}
+.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1a1f2e;font-size:13px}
+.row b{color:#00ff88}
+</style>
+<div id="depositModal" onclick="if(event.target==this)this.style.display='none'">
+<div class="dep-box">
+<h2>💳 M-Pesa Deposit <span style="font-size:11px;color:#6b7280">DEMO</span></h2>
+<p style="font-size:11px;color:#6b7280;margin-bottom:10px">This is demo only - no real money</p>
+<input placeholder="Phone 07XX XXX XXX" value="07">
+<input placeholder="Amount KSH" type="number" value="100">
+<button onclick="alert('Demo Mode: Added KSH 5000 Demo Balance!\nNo real M-Pesa needed');document.getElementById('depositModal').style.display='none'" style="width:100%;padding:12px;background:#00ff88;border:none;border-radius:8px;font-weight:900;margin-top:8px">DEPOSIT (DEMO)</button>
+<button onclick="document.getElementById('depositModal').style.display='none'" style="width:100%;padding:10px;background:transparent;border:1px solid #252a3a;border-radius:8px;color:#6b7280;margin-top:8px">Cancel</button>
+</div>
+</div>
+<script>
+function openDep(){document.getElementById('depositModal').style.display='flex'}
 </script>
 </body>
 </html>
