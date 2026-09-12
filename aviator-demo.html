@@ -46,6 +46,8 @@ function getCrashPoint(){
   if(r<0.05) return 1.00 + Math.random()*0.5;
   return Math.max(1.05, (0.95 / (1-r))).toFixed(2)*1;
 }
+
+function save(){localStorage.setItem(name+"_bal",bal);localStorage.setItem(name+"_hist",JSON.stringify(hist));}
 function reset(){
   mult=1; planeX=0; planeY=250; crashed=false; flying=false;
   document.getElementById('multiplier').className='flying';
@@ -115,7 +117,7 @@ document.getElementById('cashBtn').onclick=()=>{
   document.getElementById('cashBtn').style.display='none';
   document.getElementById('betBtn').style.display='block';
 };
-reset();
+if(hist.length) document.getElementById("hist").textContent=hist.join(" - "); reset();
 setInterval(()=>{ if(!flying && !crashed) draw(); },100);
 </script>
 </body>
