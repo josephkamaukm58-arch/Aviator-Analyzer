@@ -802,6 +802,23 @@ function showUserDashboard(){
  document.getElementById("userWelcome").textContent="Welcome, "+user.name+" 👋";
  document.getElementById("userDetails").textContent=user.email+" • "+user.phone;
  document.getElementById("userRounds").textContent=data.length;
+
+ const userAverage=data.length
+   ? (data.reduce((a,b)=>a+b,0)/data.length).toFixed(2)+"×"
+   : "0.00×";
+
+ let avgBox=document.getElementById("userAverage");
+
+ if(!avgBox){
+   const box=document.createElement("div");
+   box.id="userAverage";
+   box.style.cssText="background:#1b263b;padding:14px;border-radius:10px;text-align:center;margin-top:10px";
+   box.innerHTML='<small>AVERAGE MULTIPLIER</small><div style="font-size:24px;font-weight:bold"></div>';
+   document.getElementById("userDashboard").appendChild(box);
+   avgBox=box;
+ }
+
+ avgBox.querySelector("div").textContent=userAverage;
 }
 
 function logoutUser(){
