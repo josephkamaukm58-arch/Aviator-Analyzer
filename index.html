@@ -1086,6 +1086,13 @@ function restoreAnalysis(event){
 
 
 function showAdminDashboard(){
+ const adminPin=prompt("Enter Admin PIN:");
+
+ if(adminPin!=="2580"){
+   alert("❌ Access denied.");
+   return;
+ }
+
  const existing=document.getElementById("adminDashboard");
  if(existing) existing.remove();
 
