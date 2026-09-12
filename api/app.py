@@ -2,6 +2,15 @@ import os
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 import json, hashlib
 
+
+def get_user_count():
+    try:
+        with open("api/users.json","r",encoding="utf-8") as f:
+            users=json.load(f)
+        return len(users)
+    except Exception:
+        return 0
+
 class Handler(SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/api/register":
@@ -56,7 +65,62 @@ class Handler(SimpleHTTPRequestHandler):
             }).encode())
             return
 
+    def do_POST(self):
+        if self.path == "/api/login":
+            length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(length) or "{}")
+
+            email = str(body.get("email", "")).strip().lower()
+            password = str(body.get("password", ""))
+
+            users_file = Path("api/users.json")
+            users = json.loads(users_file.read_text() or "[]")
+
+            password_hash = hashlib.sha256(password.encode()).hexdigest()
+
+            user = next(
+                (u for u in users
+                 if u["email"] == email
+                 and u["password_hash"] == password_hash),
+                None
+            )
+
+            if not user:
+                self.send_response(401)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": False,
+                    "message": "Invalid email or password."
+                }).encode())
+                return
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "message": "Login successful.",
+                "user": {
+                    "name": user["name"],
+                    "phone": user["phone"],
+                    "email": user["email"]
+                }
+            }).encode())
+            return
+
     def do_GET(self):
+
+        if self.path == "/api/admin-stats":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "users": get_user_count(),
+                "status": "online"
+            }).encode())
+            return
+
         if self.path == "/api/status":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
