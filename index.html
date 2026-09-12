@@ -955,6 +955,19 @@ body.light-mode input{
   display:block;
 }
 </style>
+
+<style>
+.account-session-status{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  background:#183b2a;
+  color:#55e28b;
+  font-size:13px;
+  font-weight:bold;
+  text-align:center;
+}
+</style>
 </head>
 
 
@@ -2610,6 +2623,33 @@ backToTop.addEventListener("click",function(){
     behavior:"smooth"
   });
 });
+</script>
+
+<script>
+function updateAccountSessionStatus(){
+  const dashboard=document.getElementById("userDashboard");
+  if(!dashboard) return;
+
+  let status=document.getElementById("accountSessionStatus");
+
+  if(!status){
+    status=document.createElement("div");
+    status.id="accountSessionStatus";
+    status.className="account-session-status";
+    dashboard.insertBefore(status,dashboard.firstChild);
+  }
+
+  const loggedIn=localStorage.getItem("aviatorLoggedIn")==="true";
+
+  if(loggedIn){
+    status.textContent="🟢 ACCOUNT SESSION ACTIVE";
+  }else{
+    status.textContent="🔴 ACCOUNT SESSION INACTIVE";
+  }
+}
+
+window.addEventListener("load",updateAccountSessionStatus);
+setInterval(updateAccountSessionStatus,5000);
 </script>
 </body>
 </html>
