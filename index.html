@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviator Analyzer</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#090d18;color:white}
+.container{max-width:700px;margin:auto;padding:20px}
+h1{text-align:center;color:#ff3b30}
+.card{background:#121a2b;border-radius:15px;padding:20px;margin-top:20px}
+input,button{width:100%;box-sizing:border-box;padding:14px;margin-top:10px;border-radius:10px;border:0;font-size:16px}
+input{background:#202b40;color:white}
+button{background:#ff3b30;color:white;font-weight:bold}
+button:hover{opacity:.9}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.stat{background:#1b263b;padding:15px;border-radius:10px;text-align:center}
+.value{font-size:24px;font-weight:bold}
+#history{line-height:2}
+.signal{font-size:22px;text-align:center;padding:15px;border-radius:10px;background:#202b40;margin-top:15px}
+small{color:#aeb8c9}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>✈️ AVIATOR ANALYZER</h1>
+
+<div class="card">
+<h2>Enter Round Multiplier</h2>
+<input id="multiplier" type="number" step="0.01" min="1" placeholder="Example: 2.35">
+<button onclick="addRound()">ADD ROUND</button>
+
+<div class="stats">
+<div class="stat">
+<small>Rounds</small>
+<div class="value" id="rounds">0</div>
+</div>
+<div class="stat">
+<small>Average</small>
+<div class="value" id="average">0.00×</div>
+</div>
+<div class="stat">
+<small>Highest</small>
+<div class="value" id="highest">0.00×</div>
+</div>
+<div class="stat">
+<small>Lowest</small>
+<div class="value" id="lowest">0.00×</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📊 Analysis Signal</h2>
+<div class="signal" id="signal">Add rounds to begin analysis.</div>
+</div>
+
+<div class="card">
+<h2>📜 Round History</h2>
+<div id="history">No rounds recorded.</div>
+<button onclick="clearRounds()">CLEAR HISTORY</button>
+</div>
+
+<div class="card">
+<small>
+⚠️ This tool analyzes historical data only. Aviator outcomes are random
+and this analyzer cannot guarantee or predict the next multiplier.
+</small>
+</div>
+</div>
+
+<script>
+let data=JSON.parse(localStorage.getItem("aviatorRounds")||"[]");
+
+function addRound(){
+ const input=document.getElementById("multiplier");
+ const value=parseFloat(input.value);
+
+ if(!value || value<1){
+   alert("Enter a valid multiplier, for example 1.50");
+   return;
+ }
+
+ data.unshift(value);
+ localStorage.setItem("aviatorRounds",JSON.stringify(data));
+ input.value="";
+ update();
+}
+
+function clearRounds(){
+ if(confirm("Clear all round history?")){
+   data=[];
+   localStorage.removeItem("aviatorRounds");
+   update();
+ }
+}
+
+function update(){
+ document.getElementById("rounds").textContent=data.length;
+
+ if(data.length===0){
+   document.getElementById("average").textContent="0.00×";
+   document.getElementById("highest").textContent="0.00×";
+   document.getElementById("lowest").textContent="0.00×";
+   document.getElementById("history").textContent="No rounds recorded.";
+   document.getElementById("signal").textContent="Add rounds to begin analysis.";
+   return;
+ }
+
+ const avg=data.reduce((a,b)=>a+b,0)/data.length;
+ document.getElementById("average").textContent=avg.toFixed(2)+"×";
+ document.getElementById("highest").textContent=Math.max(...data).toFixed(2)+"×";
+ document.getElementById("lowest").textContent=Math.min(...data).toFixed(2)+"×";
+
+ document.getElementById("history").innerHTML=data
+   .slice(0,30)
+   .map((x,i)=>`${i+1}. <strong>${x.toFixed(2)}×</strong>`)
+   .join("<br>");
+
+ analyze();
+}
+
+function analyze(){
+ const recent=data.slice(0,10);
+ if(recent.length<5){
+   document.getElementById("signal").textContent="Need at least 5 rounds for analysis.";
+   return;
+ }
+
+ const low=recent.filter(x=>x<2).length;
+ const high=recent.filter(x=>x>=5).length;
+
+ let result;
+
+ if(low>=7){
+   result="⚠️ HIGH RISK — Many recent low rounds";
+ }else if(high>=3){
+   result="📊 HIGH VARIATION — Recent rounds are volatile";
+ }else{
+   result="🟡 NEUTRAL — No strong historical pattern detected";
+ }
+
+ document.getElementById("signal").textContent=result;
+}
+
+update();
+</script>
+
+</body>
+</html>
