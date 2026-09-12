@@ -10,8 +10,8 @@
 .bet{background:#00ff88;color:#000}.cash{background:#ff3b30;color:#fff}
 input{width:100%;padding:12px;background:#0b0e14;border:1px solid #333;border-radius:8px;color:#fff}
 </style></head><body>
-<div class="header"><a href="index.html" style="color:#888;text-decoration:none">← Lobby</a><b style="color:#00ff88">BAL: <span id="bal">5000</span></b></div>
-<div class="graph"><div id="plane">🛩️</div><div id="mult">1.00x</div></div>
+<div class="header"><a href="index.html" style="color:#888;text-decoration:none"> Lobby</a><b style="color:#00ff88">BAL: <span id="bal">5000</span></b></div>
+<div class="graph"><div id="plane"></div><div id="mult">1.00x</div></div>
 <div class="controls">
 <input id="betAmt" type="number" value="100"><button id="btn" onclick="action()" class="btn bet">BET - Start Round</button>
 <div id="log" style="margin-top:10px;font-size:12px;color:#666;display:flex;gap:5px;overflow-x:auto"></div>
@@ -35,4 +35,4 @@ function start(){
  },60);
 }
 function reset(){document.getElementById('mult').innerText='1.00x'; document.getElementById('plane').style.left='5%'; document.getElementById('plane').style.bottom='15%';}
-</script></body></html>
+</script><style>#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;display:flex;justify-content:space-around;padding:12px;z-index:99999;border-top:1px solid #1e293b}#bottom-nav a{color:#94a3b8;text-decoration:none;padding:8px 16px;border-radius:20px}#bottom-nav a.active{color:#00ff88;background:#1e293b}#home-fix{position:fixed;top:12px;left:12px;z-index:999999;background:#00ff88;color:#000;padding:10px 18px;border-radius:20px;font-weight:900;border:none}</style><button id=home-fix onclick=window.scrollTo({top:0,behavior:"smooth"})>HOME</button><script>document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("#bottom-nav a").forEach(a=>{a.onclick=(e)=>{e.preventDefault();window.scrollTo({top:0,behavior:"smooth"});document.querySelectorAll("#bottom-nav a").forEach(x=>x.classList.remove("active"));a.classList.add("active")}})})</script></body></html>

@@ -1,217 +1,45 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aviator Analyzer - Pro</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviator Analyzer</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0b0e14;color:white;font-family:Inter,sans-serif}
-header{background:#141822;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f2937}
-.logo{font-weight:900;font-size:20px;color:#00ff88}
-.logo span{color:white}
-.bal{background:#1f2937;padding:6px 12px;border-radius:20px;font-size:13px}
-.bal b{color:#00ff88}
-.live-bar{background:#11131a;padding:8px 10px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #1f2937}
-.live-bar span{padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;white-space:nowrap}
-.crash-low{background:#2a1a1a;color:#ff6b6b}.crash-mid{background:#1a2a1a;color:#ffd93d}.crash-high{background:#0a2a1a;color:#00ff88}
-.hero{padding:20px 15px}
-.hero h1{font-size:24px;margin-bottom:5px}
-.hero p{color:#6b7280;font-size:13px}
-.games{display:grid;grid-template-columns:1fr;gap:12px;padding:0 15px 20px}
-@media(min-width:600px){.games{grid-template-columns:1fr 1fr 1fr}}
-.card{background:linear-gradient(135deg,#1a1f2e 0%,#141822 100%);border:1px solid #252a3a;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;transition:0.2s}
-.card:hover{transform:translateY(-2px);border-color:#00ff88}
-.card-top{height:140px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.aviator-bg{background:radial-gradient(circle at 30% 20%,#0f4c3a 0%,#0b0e14 70%)}
-.rocket-bg{background:radial-gradient(circle at 30% 20%,#4c1a0f 0%,#0b0e14 70%)}
-.jetx-bg{background:radial-gradient(circle at 30% 20%,#3a0f4c 0%,#0b0e14 70%)}
-.card-top .icon{font-size:60px;filter:drop-shadow(0 0 20px rgba(0,255,136,0.5))}
-.mult{position:absolute;bottom:8px;left:10px;background:rgba(0,0,0,0.6);padding:3px 8px;border-radius:8px;font-size:11px;color:#00ff88}
-.live-dot{position:absolute;top:10px;left:10px;background:#ff3b30;color:white;font-size:10px;padding:3px 8px;border-radius:10px;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
-.card-info{padding:12px}
-.card-info h3{font-size:15px;margin-bottom:3px}
-.card-info p{font-size:11px;color:#6b7280;margin-bottom:10px}
-.play-btn{width:100%;padding:10px;background:#00ff88;color:#000;border:none;border-radius:8px;font-weight:900;font-size:13px;cursor:pointer}
-.rocket-btn{background:#facc15}
-.jetx-btn{background:#e879f9;color:white}
-.stats{display:flex;justify-content:space-between;margin:15px;padding:12px;background:#11131a;border-radius:12px;border:1px solid #1f2937}
-.stat{text-align:center}
-.stat b{display:block;color:#00ff88;font-size:16px}
-.stat span{font-size:10px;color:#6b7280}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">AVIATOR<span> ANALYZER</span></div>
-<button onclick="openDep()" style="background:#00ff88;color:#000;border:none;padding:6px 12px;border-radius:20px;font-weight:900;font-size:12px;margin-right:8px">DEPOSIT</button><div class="bal">DEMO • KSH <b>5000</b></div>
-</header>
-<div class="live-bar">
-<span style="background:#11131a;color:#6b7280">LAST CRASHES:</span>
-<span class="crash-high">12.43x</span><span class="crash-mid">2.47x</span><span class="crash-low">1.08x</span><span class="crash-high">5.82x</span><span class="crash-mid">1.93x</span><span class="crash-high">8.21x</span><span class="crash-low">1.23x</span><span class="crash-high">3.82x</span>
-</div>
-<div class="hero">
-<h1>Crash Games Demo</h1>
-<p>Free play • No real money • Auto saves progress • 1 min loading</p>
-</div>
-<div class="games">
-<div class="card" onclick="location.href='aviator-demo.html'">
-<div class="card-top aviator-bg"><div class="live-dot">● LIVE</div><div class="icon">✈️</div><div class="mult">1.42x → 2.47x → 12.43x</div></div>
-<div class="card-info"><h3>Aviator</h3><p>Original crash game • Cashout before plane flies</p><button class="play-btn">PLAY NOW</button></div>
-</div>
-<div class="card" onclick="location.href='crash-rocket.html'">
-<div class="card-top rocket-bg"><div class="live-dot">● LIVE</div><div class="icon">🚀</div><div class="mult">1.08x → 3.21x → 9.12x</div></div>
-<div class="card-info"><h3>Crash Rocket</h3><p>Rocket explodes anytime • High risk high reward</p><button class="play-btn rocket-btn">PLAY NOW</button></div>
-</div>
-<div class="card" onclick="location.href='jetx.html'">
-<div class="card-top jetx-bg"><div class="live-dot">● LIVE</div><div class="icon">🛩️</div><div class="mult">1.93x → 3.82x → 15.20x</div></div>
-<div class="card-info"><h3>JetX</h3><p>Jet flies higher • Win before crash • Auto bet</p><button class="play-btn jetx-btn">PLAY NOW</button></div>
-</div>
-</div>
-
-<div class="leader">
-<h3>🏆 TOP WINNERS TODAY (DEMO)</h3>
-<div class="row"><span>1. @Kamau254</span><span><b>KSH 12,430 @ 8.2x</b> ✈️</span></div>
-<div class="row"><span>2. @Akinyi_O</span><span><b>KSH 9,120 @ 5.4x</b> 🚀</span></div>
-<div class="row"><span>3. @MosesBet</span><span><b>KSH 7,800 @ 12.4x</b> 🛩️</span></div>
-<div class="row"><span>4. @Njeri</span><span><b>KSH 5,230 @ 3.2x</b> ✈️</span></div>
-<div class="row"><span>5. @You</span><span><b>KSH 5,000</b> 🔥</span></div>
-</div>
-<div class="stats">
-<div class="stat"><b>3</b><span>GAMES</span></div>
-<div class="stat"><b>1,247</b><span>PLAYERS</span></div>
-<div class="stat"><b>98.2%</b><span>RTP</span></div>
-<div class="stat"><b>FREE</b><span>DEMO</span></div>
-</div>
-<div style="text-align:center;padding:20px;color:#374151;font-size:11px">Demo only • 18+ • No real money • For entertainment</div>
-<script>
-// Fake live multiplier update
-setInterval(()=>{
-let els=document.querySelectorAll('.mult');
-els.forEach(el=>{
- let m=(1+Math.random()*8).toFixed(2);
- el.textContent=m+'x → '+(parseFloat(m)+1.2).toFixed(2)+'x → '+(parseFloat(m)*2).toFixed(2)+'x';
-});
-},3000);
-</script>
+body{background:#0b0e14;color:#fff;font-family:Arial}
+header{background:#141822;padding:12px;display:flex;justify-content:space-between}
+.logo{color:#00ff88;font-weight:900;font-size:20px}
+.logo span{color:#fff}
+.card{background:#141822;margin:12px;border-radius:16px;overflow:hidden;border:1px solid #222}
+.top{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900}
+.a{background:#0f3326;color:#00ff88}
+.r{background:#33200f;color:#facc15}
+.j{background:#2a0f33;color:#e879f9}
+.info{padding:12px}
+.btn{width:100%;padding:10px;border:none;border-radius:8px;font-weight:900;margin-top:8px}
+</style></head><body>
+<header><div class="logo">AVIATOR <span>ANALYZER</span></div><div>DEMO KES 5000</div></header>
+<div class="card" onclick="location.href='aviator-demo.html'"><div class="top a">AVIATOR</div><div class="info"><h3>Aviator</h3><p>Original crash game</p><button class="btn" style="background:#00ff88">PLAY NOW</button></div></div>
+<div class="card" onclick="location.href='crash-rocket.html'"><div class="top r">ROCKET</div><div class="info"><h3>Crash Rocket</h3><p>High risk high reward</p><button class="btn" style="background:#facc15">PLAY NOW</button></div></div>
+<div class="card" onclick="location.href='jetx.html'"><div class="top j">JETX</div><div class="info"><h3>JetX</h3><p>Win before crash</p><button class="btn" style="background:#e879f9;color:#fff">PLAY NOW</button></div></div>
 
 <style>
-#depositModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px}
-.dep-box{background:#141822;border:1px solid #252a3a;border-radius:16px;padding:20px;width:100%;max-width:340px}
-.dep-box h2{margin-bottom:10px}
-.dep-box input{width:100%;padding:12px;background:#0b0e14;border:1px solid #252a3a;border-radius:8px;color:white;margin:8px 0}
-.leader{background:#11131a;border:1px solid #1f2937;border-radius:12px;margin:0 15px 20px;padding:12px}
-.leader h3{font-size:13px;margin-bottom:10px;color:#6b7280}
-.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1a1f2e;font-size:13px}
-.row b{color:#00ff88}
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:1px solid #1e293b;display:flex;justify-content:space-around;padding:8px 0 12px 0;z-index:9999}
+#bottom-nav a{color:#94a3b8;text-decoration:none;text-align:center;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px}
+#bottom-nav a.active{color:#00ff88}
+#bottom-nav span{font-size:18px}
 </style>
-<div id="depositModal" onclick="if(event.target==this)this.style.display='none'">
-<div class="dep-box">
-<h2>💳 M-Pesa Deposit <span style="font-size:11px;color:#6b7280">DEMO</span></h2>
-<p style="font-size:11px;color:#6b7280;margin-bottom:10px">This is demo only - no real money</p>
-<input placeholder="Phone 07XX XXX XXX" value="07">
-<input placeholder="Amount KSH" type="number" value="100">
-<button onclick="alert('Demo Mode: Added KSH 5000 Demo Balance!\nNo real M-Pesa needed');document.getElementById('depositModal').style.display='none'" style="width:100%;padding:12px;background:#00ff88;border:none;border-radius:8px;font-weight:900;margin-top:8px">DEPOSIT (DEMO)</button>
-<button onclick="document.getElementById('depositModal').style.display='none'" style="width:100%;padding:10px;background:transparent;border:1px solid #252a3a;border-radius:8px;color:#6b7280;margin-top:8px">Cancel</button>
-</div>
+<div id="bottom-nav">
+<a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false"><span>🏠</span>Home</a>
+<a href="#analyzer" onclick="document.getElementById('analyzer')?.scrollIntoView({behavior:'smooth'});return false"><span>📊</span>Analyzer</a>
+<a href="aviator-demo.html"><span>✈️</span>Game</a>
+<a href="https://wa.me/254100418787"><span>💬</span>WhatsApp</a>
 </div>
 <script>
-function openDep(){document.getElementById('depositModal').style.display='flex'}
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-let chart;
-
-function drawChart(){
- const values=[...data].reverse().slice(-30);
- const ctx=document.getElementById("chart");
- if(!ctx)return;
- if(chart)chart.destroy();
- chart=new Chart(ctx,{
-   type:"line",
-   data:{
-     labels:values.map((_,i)=>i+1),
-     datasets:[{
-       label:"Multiplier",
-       data:values,
-       tension:.25,
-       fill:false
-     }]
-   },
-   options:{
-     responsive:true,
-     plugins:{legend:{display:true}},
-     scales:{
-       y:{beginAtZero:true}
-     }
-   }
- });
-}
-
-const oldUpdate=update;
-update=function(){
- oldUpdate();
- drawChart();
-};
-update();
-</script>
-
-
-<script>
-function updatePrediction(){
- const range=document.getElementById("predictionRange");
- const confidence=document.getElementById("confidence");
- const risk=document.getElementById("risk");
- const recommendation=document.getElementById("recommendation");
-
- if(data.length<10){
-   range.textContent="--";
-   confidence.textContent="Confidence: Need 10+ rounds";
-   risk.textContent="Risk: Unknown";
-   recommendation.textContent="Add more rounds";
-   return;
+// Fix all Home buttons to return to first menu
+document.querySelectorAll('a,button').forEach(el=>{
+ if(el.textContent.toLowerCase().includes('home')){
+  el.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})})
  }
-
- const recent=data.slice(0,20);
- const avg=recent.reduce((a,b)=>a+b,0)/recent.length;
- const low=recent.filter(x=>x<2).length;
- const high=recent.filter(x=>x>=5).length;
-
- let lowEstimate=Math.max(1.01,Math.min(2.5,avg*0.55));
- let highEstimate=Math.max(lowEstimate+0.25,Math.min(8,avg*1.25));
-
- let conf="Low";
- let riskLevel="High";
- let rec="👀 OBSERVE";
-
- if(recent.length>=20 && high>=3 && low<12){
-   conf="Medium";
-   riskLevel="High";
-   rec="⚠️ CAUTION";
- }else if(low>=14){
-   conf="Low";
-   riskLevel="Very High";
-   rec="🛑 WAIT";
- }else if(avg>=2.5){
-   conf="Medium";
-   riskLevel="High";
-   rec="⚠️ CAUTION";
- }
-
- range.textContent=lowEstimate.toFixed(2)+"× – "+highEstimate.toFixed(2)+"×";
- confidence.textContent="Confidence: "+conf;
- risk.textContent="Risk: "+riskLevel;
- recommendation.textContent="Signal: "+rec;
-}
-
-const originalUpdatePrediction=updatePrediction;
-const originalUpdateFunction=update;
-update=function(){
- originalUpdateFunction();
- updatePrediction();
-};
-updatePrediction();
+});
+// Make top also
+window.addEventListener('load',()=>{document.body.style.paddingBottom='70px'})
 </script>
-</body>
-</html>
+<style>#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;display:flex;justify-content:space-around;padding:12px;z-index:99999}#bottom-nav a{color:#94a3b8;text-decoration:none}#home-fix{position:fixed;top:12px;left:12px;z-index:999999;background:#00ff88;color:#000;padding:10px 18px;border-radius:20px;font-weight:900;border:none}</style><button id=home-fix onclick=window.scrollTo({top:0,behavior:"smooth"})>HOME</button></body></html>
