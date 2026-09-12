@@ -842,6 +842,47 @@ body.light-mode input{
   display:block;
 }
 </style>
+
+<style>
+.error-screen{
+  display:none;
+  min-height:55vh;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px 18px;
+}
+.error-card{
+  max-width:520px;
+  padding:30px 20px;
+  border-radius:18px;
+  background:#111a2b;
+  border:1px solid #2b3955;
+  box-shadow:0 10px 35px #0007;
+}
+.error-number{
+  font-size:64px;
+  font-weight:900;
+  color:#ff3b30;
+}
+.error-card h2{
+  margin:8px 0;
+}
+.error-card p{
+  color:#aeb8c9;
+  line-height:1.6;
+}
+.error-home{
+  display:inline-block;
+  margin-top:12px;
+  padding:13px 20px;
+  border-radius:10px;
+  background:#ff3b30;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+</style>
 </head>
 
 
@@ -2431,5 +2472,17 @@ document.addEventListener("click",async function(event){
   event.target.classList.remove("show");
 });
 </script>
+
+<section class="error-screen" id="errorScreen">
+  <div class="error-card">
+    <div class="error-number">404</div>
+    <h2>Page Not Found</h2>
+    <p>
+      The page or section you requested could not be found.
+      Return to Aviator Analyzer and continue analyzing your data.
+    </p>
+    <a class="error-home" href="/">✈️ BACK TO ANALYZER</a>
+  </div>
+</section>
 </body>
 </html>
