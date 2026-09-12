@@ -1742,7 +1742,7 @@ function restoreAnalysis(event){
      updateAdvancedStats();
      showUserDashboard();
 
-     alert("✅ Analysis history restored successfully.");
+     showToast("✅ Analysis history restored successfully.","success");
    }catch(error){
      alert("❌ Invalid Aviator Analyzer backup file.");
    }
