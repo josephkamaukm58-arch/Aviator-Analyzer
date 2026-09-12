@@ -51,6 +51,37 @@ small{color:#aeb8c9}
 </div>
 </div>
 
+<div class="card" id="advancedStats">
+<h2>🧠 Advanced Analysis</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="background:#1b263b;padding:14px;border-radius:10px;text-align:center">
+<div style="font-size:13px;color:#aeb8c9">TREND</div>
+<div id="trend" style="font-size:20px;font-weight:bold">--</div>
+</div>
+<div style="background:#1b263b;padding:14px;border-radius:10px;text-align:center">
+<div style="font-size:13px;color:#aeb8c9">LOW STREAK</div>
+<div id="streak" style="font-size:20px;font-weight:bold">--</div>
+</div>
+<div style="background:#1b263b;padding:14px;border-radius:10px;text-align:center">
+<div style="font-size:13px;color:#aeb8c9">HIGH RATE</div>
+<div id="highRate" style="font-size:20px;font-weight:bold">--</div>
+</div>
+<div style="background:#1b263b;padding:14px;border-radius:10px;text-align:center">
+<div style="font-size:13px;color:#aeb8c9">SIGNAL SCORE</div>
+<div id="score" style="font-size:20px;font-weight:bold">--</div>
+</div>
+</div>
+<div style="margin-top:15px">
+<div style="font-size:13px;color:#aeb8c9;margin-bottom:6px">RISK METER</div>
+<div style="height:18px;background:#101827;border-radius:20px;overflow:hidden">
+<div id="riskBar" style="height:100%;width:0%;border-radius:20px;transition:.4s"></div>
+</div>
+<div id="riskText" style="text-align:center;margin-top:8px;font-weight:bold">Waiting for data...</div>
+</div>
+<small style="display:block;margin-top:12px;color:#aeb8c9">
+Analysis is based only on recorded history. It cannot predict or guarantee the next random multiplier.
+</small>
+</div>
 <div class="card" id="predictionCard">
 <h2>🎯 Prediction Display</h2>
 <div style="text-align:center;padding:18px;background:#1b263b;border-radius:12px">
@@ -260,6 +291,66 @@ update=function(){
  drawChart();
 };
 update();
+</script>
+<script>
+function updateAdvancedStats(){
+ if(typeof data==="undefined" || data.length<5){
+   document.getElementById("trend").textContent="Need data";
+   document.getElementById("streak").textContent="--";
+   document.getElementById("highRate").textContent="--";
+   document.getElementById("score").textContent="--";
+   document.getElementById("riskText").textContent="Add at least 5 rounds";
+   return;
+ }
+
+ const r=data.slice(0,20);
+ const half=Math.max(2,Math.floor(r.length/2));
+ const recent=r.slice(0,half);
+ const older=r.slice(half);
+ const recentAvg=recent.reduce((a,b)=>a+b,0)/recent.length;
+ const olderAvg=older.length?older.reduce((a,b)=>a+b,0)/older.length:recentAvg;
+
+ let trend="➡️ STABLE";
+ if(recentAvg>olderAvg*1.12) trend="📈 RISING";
+ else if(recentAvg<olderAvg*0.88) trend="📉 FALLING";
+
+ let streak=0;
+ for(const x of r){
+   if(x<2) streak++;
+   else break;
+ }
+
+ const high=r.filter(x=>x>=5).length;
+ const highRate=Math.round((high/r.length)*100);
+
+ let score=Math.round(
+   Math.min(100,Math.max(0,(recentAvg/5)*45 + highRate*0.55))
+ );
+
+ let risk=50;
+ if(streak>=5) risk+=35;
+ else if(streak>=3) risk+=20;
+ if(highRate>=20) risk-=10;
+ risk=Math.max(10,Math.min(95,risk));
+
+ let riskLabel="🟡 MODERATE RISK";
+ if(risk>=75) riskLabel="🔴 HIGH RISK";
+ else if(risk<=30) riskLabel="🟢 LOWER RISK";
+
+ document.getElementById("trend").textContent=trend;
+ document.getElementById("streak").textContent=streak+" rounds";
+ document.getElementById("highRate").textContent=highRate+"%";
+ document.getElementById("score").textContent=score+"/100";
+ document.getElementById("riskBar").style.width=risk+"%";
+ document.getElementById("riskText").textContent=riskLabel+" ("+risk+"/100)";
+}
+
+const oldAdvancedUpdate=update;
+update=function(){
+ oldAdvancedUpdate();
+ updateAdvancedStats();
+};
+updateAdvancedStats();
 </script>
 </body>
 </html>
