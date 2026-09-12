@@ -1490,8 +1490,8 @@ LOG OUT
 <h2>👤 Create Your Account</h2>
 <form onsubmit="registerUser(event)">
 <input id="regName" type="text" placeholder="Full Name" required>
-<input id="regPhone" type="tel" placeholder="Phone Number" required>
-<input id="regEmail" type="email" placeholder="Email Address" required>
+<input id="regPhone" type="tel" placeholder="Phone Number" inputmode="tel" autocomplete="tel" required>
+<input id="regEmail" type="email" placeholder="Email Address" autocomplete="email" required>
 <div class="password-wrap">
 <input id="regPassword" type="password" placeholder="Create Password" required>
 <button type="button" class="password-toggle" onclick="togglePassword('regPassword',this)">SHOW</button>
@@ -2790,6 +2790,46 @@ document.addEventListener("input",function(event){
     event.target.id==="regConfirmPassword"
   )){
     checkPasswordMatch();
+  }
+});
+</script>
+
+<script>
+function validateRegistrationFields(){
+  const phone=document.getElementById("regPhone");
+  const email=document.getElementById("regEmail");
+
+  if(!phone || !email) return true;
+
+  const phoneValue=phone.value.trim();
+  const emailValue=email.value.trim();
+
+  const phonePattern=/^(?:\+254|0)[17]\d{8}$/;
+  const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if(!phonePattern.test(phoneValue)){
+    showToast("❌ Enter a valid Kenyan phone number.","error");
+    phone.focus();
+    return false;
+  }
+
+  if(!emailPattern.test(emailValue)){
+    showToast("❌ Enter a valid email address.","error");
+    email.focus();
+    return false;
+  }
+
+  return true;
+}
+
+document.addEventListener("submit",function(event){
+  if(event.target && event.target.onsubmit){
+    if(event.target.querySelector("#regPhone") &&
+       event.target.querySelector("#regEmail")){
+      if(!validateRegistrationFields()){
+        event.preventDefault();
+      }
+    }
   }
 });
 </script>
